@@ -1,63 +1,84 @@
 import React, { useEffect, useState } from "react";
 
+// === Constantes Supabase ===
 const SUPABASE_URL = "https://supabase.olivdef.fr";
 const SUPABASE_KEY =
   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdXBhYmFzZSIsImlhdCI6MTc2MzIxNzYwMCwiZXhwIjo0OTE4ODkxMjAwLCJyb2xlIjoiYW5vbiJ9.UagouIBtD8p_dKm3pJX1J2wgaiDfq0vkNo6Cv6FdCbY";
-const TABLE = "DataIntradayGrafV4-3";
 
-// Helpers de formatage
-function formatMoney(value) {
-  if (value == null || isNaN(value)) return "–";
+const TABLE_CAPITALS = "ComboIntradayGrafV4-3";
+const TABLE_DATA = "DataIntradayGrafV4-3";
+
+// === Helpers de formatage ===
+const formatMoney = (v) => {
+  if (v == null || Number.isNaN(v)) return "–";
   return new Intl.NumberFormat("fr-FR", {
-    minimumFractionDigits: 0,
+    style: "currency",
+    currency: "EUR",
     maximumFractionDigits: 0,
-  }).format(value) + " €";
-}
+  }).format(v);
+};
 
-function formatPercent(value, digits = 2) {
-  if (value == null || isNaN(value)) return "–";
-  const num = value * 100;
+const formatPercent = (v) => {
+  if (v == null || Number.isNaN(v)) return "–";
+  const n = v * 100;
   return new Intl.NumberFormat("fr-FR", {
-    minimumFractionDigits: digits,
-    maximumFractionDigits: digits,
-  }).format(num) + " %";
-}
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(n) + " %";
+};
 
-function formatRatio(value, digits = 2) {
-  if (value == null || isNaN(value)) return "–";
+const formatPercentRisk = (v) => {
+  if (v == null || Number.isNaN(v)) return "–";
+  return (
+    new Intl.NumberFormat("fr-FR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(v) + " %"
+  );
+};
+
+const formatNumber = (v) => {
+  if (v == null || Number.isNaN(v)) return "–";
+  return new Intl.NumberFormat("fr-FR").format(v);
+};
+
+const formatRatio = (v) => {
+  if (v == null || Number.isNaN(v)) return "–";
   return new Intl.NumberFormat("fr-FR", {
-    minimumFractionDigits: digits,
-    maximumFractionDigits: digits,
-  }).format(value);
-}
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(v);
+};
 
-export default function App() {
-  const [darkMode, setDarkMode] = useState(false);
+function App() {
+  const [isDark, setIsDark] = useState(false);
 
   const [capitals, setCapitals] = useState([]);
-  const [capital, setCapital] = useState("");
+  const [capitalsLoading, setCapitalsLoading] = useState(true);
+  const [capitalsError, setCapitalsError] = useState("");
+
+  const [selectedCapital, setSelectedCapital] = useState("");
   const [ddMax, setDdMax] = useState(1000);
   const [objectif, setObjectif] = useState("serenite"); // "serenite" | "performance"
 
-  const [loadingCapitals, setLoadingCapitals] = useState(false);
-  const [loadingSim, setLoadingSim] = useState(false);
-  const [error, setError] = useState("");
-  const [result, setResult] = useState(null); // { bestRow, capital, ddMax, objectif }
+  const [running, setRunning] = useState(false);
+  const [runError, setRunError] = useState("");
+  const [result, setResult] = useState(null); // ligne best
 
-  // Appliquer / retirer la classe dark sur <body>
+  // --- Dark mode : reflet sur <body> ---
   useEffect(() => {
-    document.body.classList.toggle("dark", darkMode);
-  }, [darkMode]);
+    document.body.classList.toggle("dark", isDark);
+  }, [isDark]);
 
-  // Charger la liste des capitaux au chargement
+  // --- Chargement liste des capitaux ---
   useEffect(() => {
-    async function loadCapital() {
+    const loadCapitals = async () => {
       try {
-        setLoadingCapitals(true);
-        setError("");
+        setCapitalsLoading(true);
+        setCapitalsError("");
 
         const res = await fetch(
-          `${SUPABASE_URL}/rest/v1/${TABLE}?select=Capital`,
+          `${SUPABASE_URL}/rest/v1/${TABLE_CAPITALS}?select=Capital`,
           {
             headers: {
               apikey: SUPABASE_KEY,
@@ -67,58 +88,54 @@ export default function App() {
         );
 
         if (!res.ok) {
-          throw new Error("HTTP " + res.status);
+          throw new Error(`Erreur HTTP ${res.status}`);
         }
 
         const rows = await res.json();
-        const caps = [...new Set(rows.map((r) => r.Capital))]
-          .filter((v) => v != null)
-          .sort((a, b) => a - b);
+        const uniqueCaps = [
+          ...new Set(rows.map((r) => Number(r.Capital)).filter((n) => !isNaN(n))),
+        ].sort((a, b) => a - b);
 
-        setCapitals(caps);
+        setCapitals(uniqueCaps);
       } catch (e) {
         console.error(e);
-        setError(
-          "Erreur lors du chargement des capitaux. Veuillez réessayer plus tard."
-        );
+        setCapitalsError("Erreur de chargement des capitaux.");
       } finally {
-        setLoadingCapitals(false);
+        setCapitalsLoading(false);
       }
-    }
+    };
 
-    loadCapital();
+    loadCapitals();
   }, []);
 
-  // Synchronisation slider / input DD
+  // --- Sync slider / input ---
   const handleDdSliderChange = (e) => {
-    const val = Number(e.target.value);
-    setDdMax(val);
+    const v = Number(e.target.value);
+    setDdMax(v);
   };
 
   const handleDdInputChange = (e) => {
-    let val = Number(e.target.value);
-    if (isNaN(val)) val = 0;
-    if (val < 0) val = 0;
-    if (val > 10000) val = 10000;
-    setDdMax(val);
+    let v = Number(e.target.value);
+    if (isNaN(v)) v = 0;
+    if (v < 0) v = 0;
+    if (v > 10000) v = 10000;
+    setDdMax(v);
   };
 
-  // Lancer la simulation (appel Supabase)
+  // --- Lancement simulation ---
   const handleRun = async () => {
-    const capNum = Number(capital);
-    const ddNum = Number(ddMax);
+    setRunError("");
+    setResult(null);
 
-    if (!capNum || !ddNum) {
-      setError("Veuillez remplir le capital et le drawdown max.");
-      setResult(null);
+    const capNumber = Number(selectedCapital);
+    if (!capNumber || !ddMax) {
+      setRunError("Veuillez choisir un capital et un drawdown max.");
       return;
     }
 
-    setError("");
-    setLoadingSim(true);
-
+    setRunning(true);
     try {
-      const path = `/rest/v1/${TABLE}?select=*&Capital=eq.${capNum}&Drawdown=lte.${ddNum}`;
+      const path = `/rest/v1/${TABLE_DATA}?select=*&Capital=eq.${capNumber}&Drawdown=lte.${ddMax}`;
       const res = await fetch(SUPABASE_URL + path, {
         headers: {
           apikey: SUPABASE_KEY,
@@ -127,230 +144,255 @@ export default function App() {
       });
 
       if (!res.ok) {
-        throw new Error("HTTP " + res.status);
+        throw new Error(`Erreur HTTP ${res.status}`);
       }
 
       const rows = await res.json();
 
       if (!rows.length) {
-        setResult(null);
-        setError("Aucun résultat pour cette configuration.");
+        setRunError("Aucun résultat pour cette configuration.");
         return;
       }
 
       let best = rows[0];
+
       if (objectif === "serenite") {
-        // Sérénité = max Sharpe
         rows.forEach((r) => {
-          const current = r.Sharpe ?? -Infinity;
-          const bestVal = best.Sharpe ?? -Infinity;
-          if (current > bestVal) best = r;
+          const sh = r.Sharpe ?? -Infinity;
+          const bestSh = best.Sharpe ?? -Infinity;
+          if (sh > bestSh) best = r;
         });
       } else {
-        // Performance = max Gain
         rows.forEach((r) => {
-          const current = r.Gain ?? -Infinity;
-          const bestVal = best.Gain ?? -Infinity;
-          if (current > bestVal) best = r;
+          const g = r.Gain ?? -Infinity;
+          const bestG = best.Gain ?? -Infinity;
+          if (g > bestG) best = r;
         });
       }
 
       setResult({
-        best,
-        capital: capNum,
-        ddMax: ddNum,
-        objectif,
+        row: best,
+        capital: capNumber,
+        ddMax,
       });
     } catch (e) {
       console.error(e);
-      setError("Erreur Supabase : " + e.message);
-      setResult(null);
+      setRunError("Erreur Supabase : " + e.message);
     } finally {
-      setLoadingSim(false);
+      setRunning(false);
     }
   };
-
-  const best = result?.best;
 
   return (
     <div className="app">
       {/* HEADER */}
-      <header>
-        <div>
+      <header className="header">
+        <div className="header-title-block">
           <h1>Simulateur IntradayGraf 2026</h1>
-          <div className="subtitle">
+          <p className="subtitle">
             Résultats sur base de l&apos;historique du robot sur l&apos;actif
-            «&nbsp;Allemagne 40 Cash (15mn)&nbsp;»
+            &nbsp;
+            <span className="subtitle-highlight">
+              « Allemagne 40 Cash (15mn) »
+            </span>
             <br />
             sur la période du 01/01/2017 au 10/11/2025
-          </div>
+          </p>
         </div>
         <button
-          className="theme-toggle"
-          onClick={() => setDarkMode((v) => !v)}
+          className="theme-toggle-btn"
+          onClick={() => setIsDark((d) => !d)}
         >
-          <span>{darkMode ? "🌙" : "🌞"}</span>
-          <span>{darkMode ? "Mode sombre" : "Mode clair"}</span>
+          <span className="theme-icon">{isDark ? "🌙" : "🌞"}</span>
+          <span>{isDark ? "Mode sombre" : "Mode clair"}</span>
         </button>
       </header>
 
-      {/* PARAMÈTRES */}
-      <div className="card">
-        <h2>⚙️ Paramètres</h2>
+      {/* CONTENEUR PRINCIPAL */}
+      <main className="layout">
+        {/* Colonne gauche : Paramètres */}
+        <section className="card card-params">
+          <h2>⚙️ Paramètres</h2>
 
-        {/* Capital */}
-        <label>Capital alloué (€)</label>
-        <select
-          id="capital"
-          value={capital}
-          onChange={(e) => setCapital(e.target.value)}
-          disabled={loadingCapitals}
-        >
-          {loadingCapitals && <option>Chargement…</option>}
-          {!loadingCapitals && (
+          {/* Capital */}
+          <div className="form-group">
+            <label>Capital alloué (€)</label>
+            <select
+              value={selectedCapital}
+              onChange={(e) => setSelectedCapital(e.target.value)}
+              disabled={capitalsLoading || !!capitalsError}
+            >
+              {capitalsLoading && <option>Chargement…</option>}
+              {!capitalsLoading && !capitals.length && (
+                <option>Aucun capital disponible</option>
+              )}
+              {!capitalsLoading && capitals.length > 0 && (
+                <>
+                  <option value="">Choisir…</option>
+                  {capitals.map((c) => (
+                    <option key={c} value={c}>
+                      {formatNumber(c)} €
+                    </option>
+                  ))}
+                </>
+              )}
+            </select>
+            {capitalsError && (
+              <div className="error-text small">{capitalsError}</div>
+            )}
+          </div>
+
+          {/* Drawdown max */}
+          <div className="form-group">
+            <div className="label-row">
+              <label>Drawdown max accepté (€)</label>
+              <span className="dd-value">
+                {ddMax ? `${formatNumber(ddMax)} €` : ""}
+              </span>
+            </div>
+            <div className="dd-row">
+              <input
+                type="range"
+                min={0}
+                max={10000}
+                step={100}
+                value={ddMax}
+                onChange={handleDdSliderChange}
+              />
+              <input
+                type="number"
+                min={0}
+                max={10000}
+                step={100}
+                value={ddMax}
+                onChange={handleDdInputChange}
+              />
+            </div>
+          </div>
+
+          {/* Objectif */}
+          <div className="form-group">
+            <label>Objectif</label>
+            <div className="objectif-group">
+              <button
+                type="button"
+                className={
+                  "obj-btn" + (objectif === "serenite" ? " active" : "")
+                }
+                onClick={() => setObjectif("serenite")}
+              >
+                <span className="obj-icon">🧘‍♂️</span>
+                <span>Sérénité (Sharpe)</span>
+              </button>
+              <button
+                type="button"
+                className={
+                  "obj-btn" + (objectif === "performance" ? " active" : "")
+                }
+                onClick={() => setObjectif("performance")}
+              >
+                <span className="obj-icon">⚡</span>
+                <span>Performance (Gain)</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Bouton run */}
+          <button
+            className="btn-run"
+            onClick={handleRun}
+            disabled={running || capitalsLoading}
+          >
+            {running ? "Analyse en cours…" : "🚀 Lancer la simulation"}
+          </button>
+
+          {runError && <div className="error-text">{runError}</div>}
+        </section>
+
+        {/* Colonne droite : Résultats */}
+        <section className="card card-results">
+          <h2>📊 Paramétrage optimal constaté</h2>
+          {!result && (
+            <p className="placeholder">
+              Lancez une simulation pour afficher le paramétrage optimal.
+            </p>
+          )}
+
+          {result && (
             <>
-              <option value="">Choisir…</option>
-              {capitals.map((c) => (
-                <option key={c} value={c}>
-                  {c} €
-                </option>
-              ))}
+              <p className="context">
+                Capital {formatNumber(result.capital)} € • Drawdown max accepté{" "}
+                {formatNumber(result.ddMax)} €
+              </p>
+
+              <div className="results-grid">
+                {/* Section 1 : Paramètres robot */}
+                <div className="section-label">
+                  🧩 Paramètres à appliquer dans le robot IntradayGraf 2026 :
+                </div>
+
+                <div className="stat">
+                  <div className="stat-label">Instrument</div>
+                  <div className="stat-value">
+                    {result.row.Actif ?? "–"}
+                  </div>
+                </div>
+
+                <div className="stat">
+                  <div className="stat-label">Risque par trade</div>
+                  <div className="stat-value">
+                    {formatPercentRisk(result.row.pRisque)}
+                  </div>
+                </div>
+
+                {/* Section 2 : Performance */}
+                <div className="section-label section-label-margin">
+                  📈 Performance :
+                </div>
+
+                <div className="stat">
+                  <div className="stat-label">Gain total</div>
+                  <div className="stat-value">
+                    {formatMoney(result.row.Gain)}
+                  </div>
+                </div>
+
+                <div className="stat">
+                  <div className="stat-label">Drawdown max</div>
+                  <div className="stat-value">
+                    {formatMoney(result.row.Drawdown)}
+                  </div>
+                </div>
+
+                <div className="stat">
+                  <div className="stat-label">
+                    Gain total / Drawdown max
+                  </div>
+                  <div className="stat-value">
+                    {formatRatio(result.row.Sharpe)}
+                  </div>
+                </div>
+
+                <div className="stat">
+                  <div className="stat-label">% trades gagnants</div>
+                  <div className="stat-value">
+                    {formatPercent(result.row.pGagnant)}
+                  </div>
+                </div>
+
+                <div className="stat">
+                  <div className="stat-label">Nombre de trades</div>
+                  <div className="stat-value">
+                    {formatNumber(result.row.NbTrade)}
+                  </div>
+                </div>
+              </div>
             </>
           )}
-        </select>
-
-        {/* Drawdown max avec slider + input */}
-        <div style={{ marginTop: 10 }}>
-          <div className="dd-label-row">
-            <label style={{ marginBottom: 0 }}>Drawdown max accepté (€)</label>
-            <div className="dd-value">
-              {ddMax ? `${ddMax.toString()} €` : ""}
-            </div>
-          </div>
-          <div className="slider-row" style={{ marginTop: 4 }}>
-            <input
-              id="ddSlider"
-              type="range"
-              min="0"
-              max="10000"
-              step="100"
-              value={ddMax}
-              onChange={handleDdSliderChange}
-            />
-            <input
-              id="ddMax"
-              type="number"
-              min="0"
-              max="10000"
-              step="100"
-              value={ddMax}
-              onChange={handleDdInputChange}
-            />
-          </div>
-        </div>
-
-        {/* Objectif */}
-        <div style={{ marginTop: 12 }}>
-          <label style={{ marginBottom: 6 }}>Objectif</label>
-          <div className="objectif-group">
-            <button
-              type="button"
-              className={
-                "obj-btn" + (objectif === "serenite" ? " active" : "")
-              }
-              onClick={() => setObjectif("serenite")}
-            >
-              <span className="icon">🧘‍♂️</span>
-              <span>Sérénité (Sharpe)</span>
-            </button>
-            <button
-              type="button"
-              className={
-                "obj-btn" + (objectif === "performance" ? " active" : "")
-              }
-              onClick={() => setObjectif("performance")}
-            >
-              <span className="icon">⚡</span>
-              <span>Performance (Gain)</span>
-            </button>
-          </div>
-        </div>
-
-        <button className="btn" onClick={handleRun} disabled={loadingSim}>
-          <span>🚀</span>
-          <span>{loadingSim ? "Calcul en cours…" : "Lancer la simulation"}</span>
-        </button>
-
-        {error && <div className="error">{error}</div>}
-      </div>
-
-      {/* RÉSULTATS */}
-      {result && best && (
-        <div className="card">
-          <h2>📊 Paramétrage optimal constaté</h2>
-          <div style={{ color: "var(--muted)", fontSize: ".85rem" }}>
-            Capital {formatMoney(result.capital).replace(" €", " €")} •
-            &nbsp;Drawdown max accepté {formatMoney(result.ddMax)}
-          </div>
-
-          <div className="result-grid">
-            {/* Section 1 : paramètres robot */}
-            <div className="result-section-label">
-              🧩 Paramètres à appliquer dans le robot IntradayGraf 2026 :
-            </div>
-
-            <div className="stat">
-              <div className="stat-label">Instrument</div>
-              <div className="stat-value">{best.Actif ?? "–"}</div>
-            </div>
-
-            <div className="stat">
-              <div className="stat-label">Risque par trade</div>
-              <div className="stat-value">
-                {best.pRisque != null
-                  ? formatPercent(best.pRisque, 2)
-                  : "–"}
-              </div>
-            </div>
-
-            {/* Section 2 : performance */}
-            <div className="result-section-label" style={{ marginTop: 10 }}>
-              📈 Performance :
-            </div>
-
-            <div className="stat">
-              <div className="stat-label">Gain total</div>
-              <div className="stat-value">{formatMoney(best.Gain)}</div>
-            </div>
-
-            <div className="stat">
-              <div className="stat-label">Drawdown max</div>
-              <div className="stat-value">{formatMoney(best.Drawdown)}</div>
-            </div>
-
-            <div className="stat">
-              <div className="stat-label">Gain total / Drawdown max</div>
-              <div className="stat-value">{formatRatio(best.Sharpe, 2)}</div>
-            </div>
-
-            <div className="stat">
-              <div className="stat-label">% trades gagnants</div>
-              <div className="stat-value">
-                {best.pGagnant != null
-                  ? formatPercent(best.pGagnant, 2)
-                  : "–"}
-              </div>
-            </div>
-
-            <div className="stat">
-              <div className="stat-label">Nombre de trades</div>
-              <div className="stat-value">
-                {best.NbTrade != null ? best.NbTrade : "–"}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+        </section>
+      </main>
     </div>
   );
 }
+
+export default App;

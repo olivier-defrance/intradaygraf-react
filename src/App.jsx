@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import "./index.css";
 
-const SUPABASE_URL = "https://supabase.olivdef.fr";
-const SUPABASE_KEY =
-  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdXBhYmFzZSIsImlhdCI6MTc2MzIxNzYwMCwiZXhwIjo0OTE4ODkxMjAwLCJyb2xlIjoiYW5vbiJ9.UagouIBtD8p_dKm3pJX1J2wgaiDfq0vkNo6Cv6FdCbY";
-
-const TABLE = "DataIntradayGrafV4-3";
+const API_URL = "https://api.olivdef.fr";
 
 function formatMoney(value) {
   if (value === null || value === undefined || isNaN(value)) return "–";
@@ -57,15 +53,7 @@ function App() {
         setLoadingCapitals(true);
         setCapitalError("");
 
-        const response = await fetch(
-          `${SUPABASE_URL}/rest/v1/${TABLE}?select=Capital`,
-          {
-            headers: {
-              apikey: SUPABASE_KEY,
-              Authorization: `Bearer ${SUPABASE_KEY}`,
-            },
-          }
-        );
+        const response = await fetch(`${API_URL}/simu?select=Capital`);
 
         if (!response.ok) {
           throw new Error(`Erreur HTTP ${response.status}`);
@@ -127,13 +115,8 @@ function App() {
     setLoadingSimu(true);
 
     try {
-      const query = `/rest/v1/${TABLE}?select=*&Capital=eq.${capNumber}&Drawdown=lte.${ddNumber}`;
-      const response = await fetch(SUPABASE_URL + query, {
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: `Bearer ${SUPABASE_KEY}`,
-        },
-      });
+      const url = `${API_URL}/simu?select=*&Capital=eq.${capNumber}&Drawdown=lte.${ddNumber}`;
+      const response = await fetch(url);
 
       if (!response.ok) {
         throw new Error(`Erreur HTTP ${response.status}`);

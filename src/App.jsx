@@ -531,12 +531,10 @@ CalendrierON = 1          // Filtre jours fériés + FED/BCE
         {
           name: "Optimisation",
           data: [
-            {
-              x: result.Drawdown,        // Axe X
-              y: result.Gain,            // Axe Y
-              size: result.pRisque,      // Taille du point
-              color: result.Sharpe ?? 1  // Couleur basée sur Gain/DD
-            }
+            [
+              result.Drawdown,
+              result.Gain
+            ]
           ]
         }
       ]}
@@ -553,22 +551,28 @@ CalendrierON = 1          // Filtre jours fériés + FED/BCE
           title: { text: "Gain (€)" },
           labels: { formatter: (v) => Math.round(v) }
         },
+
+        // ★ Taille du point
         markers: {
-          size: result.pRisque / 2, // réduit un peu la taille pour l’esthétique
+          size: Math.max(6, Math.min(30, result.pRisque * 1.5)),
           colors: [
             result.Sharpe > 2
-              ? "#00c853" // vert vif si très bon ratio
+              ? "#00c853"
               : result.Sharpe > 1
-              ? "#ffd600" // jaune si correct
-              : "#d50000" // rouge si faible
+              ? "#ffd600"
+              : "#d50000"
           ]
         },
+
         tooltip: {
-          y: {
+          shared: false,
+          intersect: true,
+          theme: "dark",
+          x: {
             formatter: (val) =>
               new Intl.NumberFormat("fr-FR").format(val) + " €"
           },
-          x: {
+          y: {
             formatter: (val) =>
               new Intl.NumberFormat("fr-FR").format(val) + " €"
           }
@@ -577,6 +581,7 @@ CalendrierON = 1          // Filtre jours fériés + FED/BCE
     />
   </section>
 )}
+
 
 
         </main>

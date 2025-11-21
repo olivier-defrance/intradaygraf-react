@@ -518,7 +518,6 @@ CalendrierON = 1          // Filtre jours fériés + FED/BCE
 {`% du capital max utilisé pour les ventes`}
 </pre>
   </section>
-)}
 
 {result && (
   <section className="card card-charts">
@@ -582,6 +581,7 @@ CalendrierON = 1          // Filtre jours fériés + FED/BCE
   </section>
 )}
 
+)}
 
 
 

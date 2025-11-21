@@ -451,8 +451,8 @@ CapitalAlloue = ${result.capital}      // Votre CapitalAlloue à allouer au robo
 PerteMaxCapital = ${result.ddMax}    // Perte maximale supportée sur le capital alloué
 REINV = 0                 // Changer pour 1 pour re-investir les gains
 
-RisqueTradeAchat = ${result.pRisque.toFixed(2)}   // Risque par trade à l'achat en % du CapitalAlloue
-RisqueTradeVente = ${result.pRisque.toFixed(2)}   // Risque par trade à la vente en % du CapitalAlloue
+RisqueTradeAchat = ${(result.pRisque ?? 0).toFixed(2)}   // Risque par trade à l'achat en % du CapitalAlloue
+RisqueTradeVente = ${(result.pRisque ?? 0).toFixed(2)}   // Risque par trade à la vente en % du CapitalAlloue
 sortielongWE = 1          // 1=cloturer vendredi soir; 0=garder en weekend
 sortiecourtWE = 1         // 1=cloturer vendredi soir; 0=garder en weekend
 activerLongs = 1          // 1=activer les trades à l'achat, 0=désactiver les achats
@@ -491,10 +491,10 @@ PerteMaxCapital = `}
 REINV = 0                 // Changer pour 1 pour re-investir les gains
 
 RisqueTradeAchat = `}
-<span className="dynamic-value">{result.pRisque.toFixed(2)}</span>
+<span className="dynamic-value">{(result.pRisque ?? 0).toFixed(2)}</span>
 {`  // Risque par trade à l'achat en % du CapitalAlloue
 RisqueTradeVente = `}
-<span className="dynamic-value">{result.pRisque.toFixed(2)}</span>
+<span className="dynamic-value">{(result.pRisque ?? 0).toFixed(2)}</span>
 {`  // Risque par trade à la vente en % du CapitalAlloue
 sortielongWE = 1          // 1=cloturer vendredi soir; 0=garder en weekend
 sortiecourtWE = 1         // 1=cloturer vendredi soir; 0=garder en weekend

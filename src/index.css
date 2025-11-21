@@ -515,13 +515,13 @@ body {
 }
 
 .robot-code-block {
-  background: var(--card-bg);
+  background: var(--bg-card);
   padding: 16px;
   border-radius: 10px;
   white-space: pre-wrap;
   font-size: 0.85rem;
   line-height: 1.4;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-subtle);
 }
 
 .dynamic-value {

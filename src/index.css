@@ -534,5 +534,8 @@ body {
 
 .card-charts {
   overflow: visible !important;
+  position: relative;
+  z-index: 5;
 }
+
 

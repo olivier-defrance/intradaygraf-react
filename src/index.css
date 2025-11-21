@@ -533,5 +533,6 @@ body {
 }
 
 .card-charts {
-  margin-top: 25px;
+  overflow: visible !important;
 }
+

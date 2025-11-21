@@ -344,7 +344,7 @@ function App() {
           {/* Résultats */}
           {result && (
             <section className="card card-results">
-              <h2 className="card-title">📊 Paramétrage optimal constaté</h2>
+              <h2 className="card-title">📊 Paramétrage optimal constaté sur la période hisrotique du 01/01/2017 au 10/11/2025</h2>
               <p className="context-text">
                 Capital {formatMoney(result.capital)} • Drawdown max accepté{" "}
                 {formatMoney(result.ddMax)}

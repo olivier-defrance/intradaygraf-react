@@ -581,7 +581,7 @@ const roundedMax = Math.ceil(maxDD / step) * step;
             y: bestSerenite.Drawdown,
             meta: bestSerenite,
             fillColor: "#00e676",
-            marker: { size: 16, strokeWidth: 2, strokeColor: "#00c853" }
+            marker: { size: 18, strokeWidth: 2, strokeColor: "#00c853" }
           }],
         },
 
@@ -592,7 +592,7 @@ const roundedMax = Math.ceil(maxDD / step) * step;
             y: bestPerformance.Drawdown,
             meta: bestPerformance,
             fillColor: "#ffab00",
-            marker: { size: 16, strokeWidth: 2, strokeColor: "#ff6f00" }
+            marker: { size: 18, strokeWidth: 2, strokeColor: "#ff6f00" }
           }],
         }
       ].filter(Boolean)}

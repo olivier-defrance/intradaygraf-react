@@ -235,6 +235,8 @@ setBestPerformance(
       setLoadingSimu(false);
     }
   };
+  
+  const objectifLabel = objectif === "serenite" ? "🧘‍♂️ Sérénité" : "⚡ Performance";
 
   return (
     <div className="app-root">
@@ -392,8 +394,8 @@ setBestPerformance(
             <section className="card card-results">
               <h2 className="card-title">📊 Paramétrage optimal constaté en backtest (2017 → 10/11/2025)</h2>
               <p className="context-text">
-                Capital {formatMoney(result.capital)} • Drawdown max accepté{" "}
-                {formatMoney(result.ddMax)} • {"serenite" ? "🧘‍♂️ Sérénité" : "⚡ Performance"}
+                Objectif {objectifLabel} • Capital {formatMoney(result.capital)} • Drawdown max accepté{" "}
+                {formatMoney(result.ddMax)}
               </p>
 
               <div className="results-grid">

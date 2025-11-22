@@ -503,6 +503,15 @@ setBestPerformance(
 <span className="slider"></span>
 </div>
 <span>Allemagne 40 Cash (1€)</span>
+    {/* Pastille ronde bleu clair */}
+    <span
+      style={{
+        width: "14px",
+        height: "14px",
+        borderRadius: "50%",       // rond
+        backgroundColor: "#64b5f6" // couleur actif 1€
+      }}
+    ></span>
 </label>
 
 
@@ -512,6 +521,15 @@ setBestPerformance(
 <span className="slider"></span>
 </div>
 <span>Allemagne 40 Cash (5€)</span>
+    {/* Pastille ronde bleu foncé */}
+    <span
+      style={{
+        width: "14px",
+        height: "14px",
+        borderRadius: "50%",
+        backgroundColor: "#1565c0" // couleur actif 5€
+      }}
+    ></span>
 </label>
 </div>
 

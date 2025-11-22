@@ -551,10 +551,7 @@ function App() {
       series={[
         {
           name: "Toutes les stratégies",
-          data: allPoints.map((p) => ({
-            x: p.Drawdown,
-            y: p.Gain
-          }))
+          data: allPoints.map((p) => [p.Drawdown, p.Gain])
         },
         {
           name: "🎯 Sérénité (Sharpe max)",

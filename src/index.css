@@ -190,11 +190,10 @@ body {
 }
 
 .card-title {
-  margin: 0 0 14px;
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  padding: 6px 12px;
+  border-left: 6px solid #3f51b5;
+  background: #f7f9fc;
+  border-radius: 4px;
 }
 
 /* Fields */

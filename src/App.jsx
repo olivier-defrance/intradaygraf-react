@@ -591,11 +591,16 @@ setBestPerformance(
 
         xaxis: {
           title: { text: "Gain (€)" },
-          tickAmount: 6,
-          labels: {
-            formatter: (v) => Math.round(v),
-          }
-        },
+          tickAmount: 8,   // nombre max de ticks → ApexCharts optimise
+  
+			  labels: {
+				formatter: (value) => {
+				  const v = Math.round(value);
+				  // Affiche uniquement si multiple de 1000
+				  return v % 1000 === 0 ? `${v} €` : "";
+				}
+			  }
+			},
 
         yaxis: {
           title: { text: "Drawdown (€)" },

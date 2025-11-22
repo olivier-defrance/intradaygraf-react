@@ -47,14 +47,31 @@ function App() {
   // Filtres actifs
   const [filterActif1, setFilterActif1] = useState(true);
   const [filterActif5, setFilterActif5] = useState(true);
-  const toggleActif1 = () => {
-  if (filterActif1 && !filterActif5) return; // empêcher tout décochage
-  setFilterActif1(!filterActif1);
+
+const toggleActif1 = () => {
+  const newValue = !filterActif1;
+  const other = filterActif5;
+
+  // Appliquer le changement
+  setFilterActif1(newValue);
+
+  // Si les deux sont décochés → réactiver automatiquement l'autre
+  if (!newValue && !other) {
+    setFilterActif5(true);
+  }
 };
 
 const toggleActif5 = () => {
-  if (filterActif5 && !filterActif1) return; // empêcher tout décochage
-  setFilterActif5(!filterActif5);
+  const newValue = !filterActif5;
+  const other = filterActif1;
+
+  // Appliquer le changement
+  setFilterActif5(newValue);
+
+  // Si les deux sont décochés → réactiver automatiquement l'autre
+  if (!newValue && !other) {
+    setFilterActif1(true);
+  }
 };
   
   const [showToolbar, setShowToolbar] = useState(true);

@@ -568,54 +568,20 @@ setBestPerformance(
           name: "Toutes les stratégies",
           data: allPoints.map((p) => [p.Drawdown, p.Gain])
         },
-        {
+        bestSerenite && {
           name: "🎯 Sérénité (Sharpe max)",
-          data: [
-            {
-              x: bestSerenite.Drawdown,
-              y: bestSerenite.Gain
-            }
-          ]
+          data: [{ x: bestSerenite.Drawdown, y: bestSerenite.Gain }]
         },
-        {
+        bestPerformance && {
           name: "🔥 Performance (Gain max)",
-          data: [
-            {
-              x: bestPerformance.Drawdown,
-              y: bestPerformance.Gain
-            }
-          ]
+          data: [{ x: bestPerformance.Drawdown, y: bestPerformance.Gain }]
         }
-      ]}
-      options={{
-        chart: {
-          zoom: { enabled: true },
-          toolbar: { show: true }
-        },
-
-        xaxis: { title: { text: "Drawdown (€)" } },
-        yaxis: { title: { text: "Gain (€)" } },
-
-        markers: {
-          size: (opts) => {
-            if (opts.seriesIndex === 1) return 18;
-            if (opts.seriesIndex === 2) return 18;
-            return 8;
-          },
-          colors: (opts) => {
-            if (opts.seriesIndex === 1) return "#00e676"; // Sérénité = vert
-            if (opts.seriesIndex === 2) return "#ffd600"; // Performance = jaune
-            return "#90caf9"; // Nuage = bleu clair
-          }
-        },
-
-        tooltip: {
-          theme: "dark"
-        }
-      }}
+      ].filter(Boolean)}
+      options={…}
     />
   </section>
 )}
+
 
 
 

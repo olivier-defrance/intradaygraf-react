@@ -556,7 +556,7 @@ setBestPerformance(
 			  </section>
 			)}
 
-{result && allPoints.length > 0 && bestSerenite && bestPerformance && (
+{allPoints.length > 0 && (
   <section className="card card-charts">
     <h2 className="card-title">📊 Performance vs Risque (toutes stratégies)</h2>
 

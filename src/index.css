@@ -27,14 +27,6 @@
   --primary-btn-shadow: 0 14px 8px rgba(37, 99, 235, 0.25);
 }
 
-[data-theme="light"] {
-
-
-
-
-
-}
-
 /* Global */
 
 *,
@@ -115,7 +107,7 @@ body {
 .theme-toggle {
   border-radius: var(--radius-pill);
   border: 1px solid var(--border-subtle);
-  background: rgba(15, 23, 42, 0.75);
+  background: rgba(255, 255, 255, 0.85);
   color: var(--text-main);
   padding: 6px 12px;
   display: inline-flex;
@@ -128,10 +120,6 @@ body {
     background 0.2s ease,
     border-color 0.2s ease,
     transform 0.1s ease;
-}
-
-[data-theme="light"] .theme-toggle {
-  background: rgba(255, 255, 255, 0.85);
 }
 
 .theme-toggle:hover {
@@ -159,21 +147,15 @@ body {
 
 .card {
   border-radius: var(--radius-lg);
-  background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.15), transparent 55%),
-    radial-gradient(circle at bottom right, rgba(30, 64, 175, 0.22), transparent 55%),
-    var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  box-shadow: var(--shadow-soft);
-  padding: 18px 16px 20px;
-  backdrop-filter: blur(12px);
-}
-
-[data-theme="light"] .card {
   background: linear-gradient(
     135deg,
     rgba(255, 255, 255, 0.96),
     rgba(248, 250, 252, 0.98)
   );
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  padding: 18px 16px 20px;
+  backdrop-filter: blur(12px);
 }
 
 .card-title {
@@ -468,12 +450,8 @@ body {
 .stat-card {
   border-radius: 12px;
   border: 1px solid var(--border-subtle);
-  background: rgba(15, 23, 42, 0.65);
-  padding: 10px 10px 11px;
-}
-
-[data-theme="light"] .stat-card {
   background: rgba(255, 255, 255, 0.96);
+  padding: 10px 10px 11px;
 }
 
 .stat-label {

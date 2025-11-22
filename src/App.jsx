@@ -524,7 +524,10 @@ const darkModeSwitch = (
     </h2>
 
     <p className="context-text">
-      Chaque point représente le résultat d'un backtest avec une combinaison différente de paramètres pour un capital alloué de {formatMoney(result.capital)}.
+      Chaque point du graphique représente le résultat d'un backtest utilisant une combinaison différente de paramètres pour un capital alloué de {formatMoney(result.capital)}.
+    </p>
+	<p className="context-text">
+      Sélectionner un point du graphique pour voir la combinaison appliquée.
     </p>
 
     {/* === FILTRES ACTIFS === */}
@@ -606,7 +609,8 @@ const darkModeSwitch = (
           toolbar: {
             show: true,
             tools: {
-              download: false,  // 🔥 désactive le download CSV
+              download: false,
+			  zoom: false
             }
           }
         },

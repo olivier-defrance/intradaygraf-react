@@ -568,19 +568,83 @@ setBestPerformance(
           name: "Toutes les stratégies",
           data: allPoints.map((p) => [p.Drawdown, p.Gain])
         },
-        bestSerenite && {
-          name: "🎯 Sérénité (Sharpe max)",
-          data: [{ x: bestSerenite.Drawdown, y: bestSerenite.Gain }]
-        },
-        bestPerformance && {
-          name: "🔥 Performance (Gain max)",
-          data: [{ x: bestPerformance.Drawdown, y: bestPerformance.Gain }]
-        }
+        bestSerenite && bestSerenite.Drawdown !== undefined && bestSerenite.Gain !== undefined
+          ? {
+              name: "🎯 Sérénité (Sharpe max)",
+              data: [
+                {
+                  x: bestSerenite.Drawdown,
+                  y: bestSerenite.Gain
+                }
+              ]
+            }
+          : null,
+        bestPerformance && bestPerformance.Drawdown !== undefined && bestPerformance.Gain !== undefined
+          ? {
+              name: "🔥 Performance (Gain max)",
+              data: [
+                {
+                  x: bestPerformance.Drawdown,
+                  y: bestPerformance.Gain
+                }
+              ]
+            }
+          : null
       ].filter(Boolean)}
-      options={…}
+      options={{
+        chart: {
+          zoom: { enabled: true },
+          toolbar: { show: true }
+        },
+
+        xaxis: {
+          title: { text: "Drawdown (€)" },
+          labels: {
+            formatter: (value) => Number(value)
+          }
+        },
+
+        yaxis: {
+          title: { text: "Gain (€)" },
+          labels: {
+            formatter: (value) => Number(value)
+          }
+        },
+
+        grid: {
+          borderColor: "#777",
+          strokeDashArray: 4
+        },
+
+        markers: {
+          size: (opts) => {
+            if (opts.seriesIndex === 1) return 18; // Sérénité
+            if (opts.seriesIndex === 2) return 18; // Performance
+            return 8; // Nuage
+          },
+          colors: (opts) => {
+            if (opts.seriesIndex === 1) return "#00e676"; // vert
+            if (opts.seriesIndex === 2) return "#ffd600"; // jaune
+            return "#90caf9"; // bleu clair
+          },
+          strokeWidth: 1,
+          strokeColors: "#222"
+        },
+
+        tooltip: {
+          theme: "dark",
+          x: {
+            formatter: (value) => `${value} €`
+          },
+          y: {
+            formatter: (value) => `${value} €`
+          }
+        }
+      }}
     />
   </section>
 )}
+
 
 
 

@@ -237,7 +237,7 @@ setBestPerformance(
   };
 
   return (
-    <div className="app-root">
+    <div className="app-root theme-light">
       <div className="app-gradient" />
       <div className="app-shell">
 <header className="header-hero">

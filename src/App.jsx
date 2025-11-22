@@ -234,7 +234,7 @@ setBestPerformance(
         <main className="app-main">
           {/* Bloc paramètres */}
           <section className="card card-params">
-            <h2 className="card-title">⚙️ *Paramètres de simulation</h2>
+            <h2 className="card-title">⚙️ Paramètres de simulation</h2>
 
             {/* Capital */}
             <div className="field">
@@ -558,7 +558,7 @@ setBestPerformance(
 
 {result && allPoints.length > 0 && bestSerenite && bestPerformance && (
   <section className="card card-charts">
-    <h2 className="card-title">📊 *Performance vs Risque (toutes stratégies)</h2>
+    <h2 className="card-title">📊 Performance vs Risque (toutes stratégies)</h2>
 
     <Chart
       type="scatter"

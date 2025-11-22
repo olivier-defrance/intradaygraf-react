@@ -47,8 +47,9 @@ function App() {
   // Filtres actifs
   const [filterActif1, setFilterActif1] = useState(true);
   const [filterActif5, setFilterActif5] = useState(true);
+  const [objectifUtilise, setObjectifUtilise] = useState(null);
 
-const toggleActif1 = () => {
+  const toggleActif1 = () => {
   const newValue = !filterActif1;
   const other = filterActif5;
 
@@ -148,6 +149,7 @@ useEffect(() => {
   const handleRunSimulation = async () => {
     setSimuError("");
     setResult(null);
+	setObjectifUtilise(objectif);
 
     const capNumber = Number(capital);
     const ddNumber = Number(ddMax);
@@ -391,15 +393,8 @@ setBestPerformance(
           {result && (
             <section className="card card-results">
               <h2 className="card-title">📊 Paramétrage optimal constaté en backtest (2017 → 10/11/2025)</h2>
-				{/* Affichage de l’objectif utilisé : seulement après clic bouton */}
-				<p className="context-text" style={{ fontWeight: "600" }}>
-				  Objectif utilisé :{" "}
-				  {objectif === "serenite" ? "🧘 Sérénité (Gain / Drawdown)" : "⚡ Performance (Gain total)"}
-				</p>
-
 				<p className="context-text">
-				  Capital {formatMoney(result.capital)} • Perte maximale de capital supportée{" "}
-				  {formatMoney(result.ddMax)}
+				  Objectif utilisé {objectifUtilise && ({" "}{objectifUtilise === "serenite" ? "🧘‍♂️ Sérénité (Gain / Drawdown)" : "⚡ Performance (Gain total)"})} • Capital {formatMoney(result.capital)} • Perte maximale de capital supportée{" "}{formatMoney(result.ddMax)}
 				</p>
 
 

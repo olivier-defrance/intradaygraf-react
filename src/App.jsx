@@ -487,113 +487,164 @@ setBestPerformance(
 			  </div>
 
 			  {/* === CHART === */}
-				<Chart
-				  type="scatter"
-				  height={420}
-				  series={[
-					{
-					  name: "Toutes les stratégies",
-					  data: filteredPoints.map((p) => ({
-						x: Math.round(p.Gain),      // Gain → axe X
-						y: p.Drawdown,              // Drawdown → axe Y
-						meta: p,
-						fillColor: (() => {
-						  const actif = String(p.Actif || "").toLowerCase();
-						  if (actif.includes("1€")) return "#64b5f6";   // bleu clair
-						  if (actif.includes("5€")) return "#1565c0";   // bleu foncé
-						  return "#90caf9";
-						})()
-					  }))
-					},
-					bestSerenite && {
-					  name: "🧘 Sérénité",
-					  data: [{
-						x: Math.round(bestSerenite.Gain),
-						y: bestSerenite.Drawdown,
-						meta: bestSerenite,
-						fillColor: "#00e676",
-						marker: { size: 16, strokeWidth: 2, strokeColor: "#00c853" }
-					  }]
-					},
-					bestPerformance && {
-					  name: "⚡ Performance",
-					  data: [{
-						x: Math.round(bestPerformance.Gain),
-						y: bestPerformance.Drawdown,
-						meta: bestPerformance,
-						fillColor: "#ffab00",
-						marker: { size: 16, strokeWidth: 2, strokeColor: "#ff6f00" }
-					  }]
-					}
-				  ].filter(Boolean)}
+{allPoints.length > 0 && (
+  <section className="card card-charts">
 
-				  options={{
-					chart: {
-					  zoom: { enabled: true },
-					  toolbar: {
-						  download: false,  
-						  selection: true,
-						  zoom: false,
-						  zoomin: true,
-						  zoomout: true,
-						  pan: true,
-						  reset: true
-						}
-					},
+    <h2 className="card-title">📊 Performance vs Risque</h2>
 
-					colors: [],
+    {/* === FILTRES ACTIFS === */}
+    <div className="filters-actifs" style={{ marginBottom: "1rem" }}>
+      <label>
+        <input
+          type="checkbox"
+          checked={filterActif1}
+          onChange={() => setFilterActif1(!filterActif1)}
+        />
+        {" "}Allemagne 40 Cash (1€)
+      </label>
 
-					// 🔄 NOUVEL AXE X = GAIN
-					xaxis: {
-					  title: { text: "Gain (€)" },
-					  tickAmount: 6,
-					  min: 0,
-					  max: Math.ceil(Math.max(...filteredPoints.map(p => p.Gain)) / 1000) * 1000,
-					  labels: {
-						formatter: (v) => Math.round(v)
-					  }
-					},
+      <label style={{ marginLeft: "1rem" }}>
+        <input
+          type="checkbox"
+          checked={filterActif5}
+          onChange={() => setFilterActif5(!filterActif5)}
+        />
+        {" "}Allemagne 40 Cash (5€)
+      </label>
+    </div>
 
-					// 🔄 NOUVEL AXE Y = DRAWDOWN
-					yaxis: {
-					  title: { text: "Drawdown (€)" },
-					  tickAmount: 6,
-					  labels: {
-						formatter: (v) => Math.round(v)
-					  }
-					},
+    {/* === CHART === */}
+    <Chart
+      type="scatter"
+      height={420}
+      series={[
+        /* --- Série principale : tous les points --- */
+        {
+          name: "Toutes les stratégies",
+          data: filteredPoints.map((p) => ({
+            x: Math.round(p.Gain),
+            y: p.Drawdown,
+            meta: p,
+            fillColor: (() => {
+              const actif = String(p.Actif || "").toLowerCase();
+              if (actif.includes("1€")) return "#64b5f6";   // bleu clair
+              if (actif.includes("5€")) return "#1565c0";   // bleu foncé
+              return "#90caf9";
+            })()
+          }))
+        },
 
-					tooltip: {
-					  shared: false,
-					  intersect: true,
-					  custom: function({ seriesIndex, dataPointIndex, w }) {
-						const p = w.config.series[seriesIndex].data[dataPointIndex].meta;
-						if (!p) return "<div style='padding:5px'>Aucune donnée</div>";
-						return `
-						  <div style="padding:10px; font-size:14px">
-							<strong>${Math.round(p.Gain)} € de gain</strong><br/>
-							📉 Drawdown : <b>${Math.round(p.Drawdown)} €</b><br/>
-							🏦 Capital : <b>${p.Capital} €</b><br/>
-							📈 Actif : <b>${p.Actif}</b><br/>
-							🎯 Risque/trade : <b>${p.pRisque.toFixed(2)} %</b><br/>
-							🔥 % capital ventes : <b>${Math.round(p.pCapitalVente * 100)} %</b>
-						  </div>
-						`;
-					  }
-					},
+        /* --- Point Sérénité — Highlight --- */
+        bestSerenite && {
+          name: "🧘 Sérénité",
+          data: [{
+            x: Math.round(bestSerenite.Gain),
+            y: bestSerenite.Drawdown,
+            meta: bestSerenite
+          }],
+          marker: {
+            size: 22,
+            strokeWidth: 4,
+            strokeColor: "#00c853",    // halo vert
+            fillColor: "#00e676"       // point vert vif
+          }
+        },
 
-					markers: {
-					  size: 7,
-					  strokeWidth: 1,
-					  hover: { size: 9 }
-					},
+        /* --- Point Performance — Highlight --- */
+        bestPerformance && {
+          name: "⚡ Performance",
+          data: [{
+            x: Math.round(bestPerformance.Gain),
+            y: bestPerformance.Drawdown,
+            meta: bestPerformance
+          }],
+          marker: {
+            size: 22,
+            strokeWidth: 4,
+            strokeColor: "#ff6f00",    // halo orange
+            fillColor: "#ffab00"       // point orange vif
+          }
+        }
+      ].filter(Boolean)}
 
-					legend: {
-					  position: "top",
-					  markers: { width: 14, height: 14 }
-					}
-				  }}
-				/>
+      options={{
+        chart: {
+          zoom: { enabled: true },
+          toolbar: {
+            download: false,
+            selection: true,
+            zoom: false,
+            zoomin: true,
+            zoomout: true,
+            pan: true,
+            reset: true
+          }
+        },
+
+        colors: [],
+
+        /* === AXE X = Gain === */
+        xaxis: {
+          title: { text: "Gain (€)" },
+          tickAmount: 6,
+          min: 0,
+          max:
+            Math.ceil(
+              Math.max(...filteredPoints.map((p) => p.Gain)) / 1000
+            ) * 1000,
+          labels: {
+            formatter: (v) => Math.round(v)
+          }
+        },
+
+        /* === AXE Y = Drawdown === */
+        yaxis: {
+          title: { text: "Drawdown (€)" },
+          tickAmount: 6,
+          labels: {
+            formatter: (v) => Math.round(v)
+          }
+        },
+
+        /* === Infobulle enrichie === */
+        tooltip: {
+          shared: false,
+          intersect: true,
+          custom: function ({ seriesIndex, dataPointIndex, w }) {
+            const p =
+              w.config.series[seriesIndex].data[dataPointIndex].meta;
+            if (!p)
+              return "<div style='padding:5px'>Aucune donnée</div>";
+
+            return `
+              <div style="padding:10px; font-size:14px">
+                <strong>${Math.round(p.Gain)} € de gain</strong><br/>
+                📉 Drawdown : <b>${Math.round(p.Drawdown)} €</b><br/>
+                🏦 Capital : <b>${p.Capital} €</b><br/>
+                📈 Actif : <b>${p.Actif}</b><br/>
+                🎯 Risque/trade : <b>${p.pRisque.toFixed(2)} %</b><br/>
+                🔥 % capital ventes : <b>${Math.round(
+                  p.pCapitalVente * 100
+                )} %</b>
+              </div>`;
+          }
+        },
+
+        markers: {
+          size: 7,
+          strokeWidth: 1,
+          hover: { size: 9 }
+        },
+
+        legend: {
+          position: "top",
+          markers: { width: 14, height: 14 }
+        }
+      }}
+    />
+  </section>
+)}
+
 
 
 			</section>

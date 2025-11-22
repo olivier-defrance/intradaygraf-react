@@ -521,63 +521,74 @@ function App() {
 			  </section>
 			)}
 
-{result && (
+{result && allPoints && (
   <section className="card card-charts">
-    <h2 className="card-title">📊 Performance vs Risque</h2>
+    <h2 className="card-title">📊 Performance vs Risque (toutes stratégies)</h2>
 
     <Chart
       type="scatter"
-      height={350}
+      height={400}
       series={[
         {
-          name: "Optimisation",
-          data: [[result.Drawdown, result.Gain]]
+          name: "Toutes les stratégies",
+          data: allPoints.map((p) => ({
+            x: p.Drawdown,
+            y: p.Gain
+          }))
+        },
+        {
+          name: "🎯 Sérénité (Sharpe max)",
+          data: [
+            {
+              x: bestSerenite.Drawdown,
+              y: bestSerenite.Gain
+            }
+          ]
+        },
+        {
+          name: "🔥 Performance (Gain max)",
+          data: [
+            {
+              x: bestPerformance.Drawdown,
+              y: bestPerformance.Gain
+            }
+          ]
         }
       ]}
       options={{
         chart: {
-          zoom: { enabled: false },
-          toolbar: { show: false }
+          zoom: { enabled: true },
+          toolbar: { show: true }
         },
 
         xaxis: {
-          title: { text: "Drawdown (€)" },
-          labels: {
-            formatter: (v) => Math.round(v)
-          }
+          title: { text: "Drawdown (€)" }
         },
-
         yaxis: {
-          title: { text: "Gain (€)" },
-          labels: {
-            formatter: (v) => Math.round(v)
-          }
+          title: { text: "Gain (€)" }
         },
 
         markers: {
-          size: Math.max(6, Math.min(30, result.pRisque * 1.5)),
-          colors: [
-            result.Gain / Math.max(1, result.Drawdown) > 1
-              ? "#00c853" // vert (bon ratio)
-              : "#d50000" // rouge (ratio faible)
-          ]
+          size: ({ seriesIndex }) => {
+            if (seriesIndex === 1) return 18; // Sérénité
+            if (seriesIndex === 2) return 18; // Performance
+            return 8; // autres
+          },
+          colors: ({ seriesIndex }) => {
+            if (seriesIndex === 1) return "#00e676"; // vert
+            if (seriesIndex === 2) return "#ffd600"; // jaune 
+            return "#90caf9"; // bleu clair pour le nuage
+          }
         },
 
         tooltip: {
-          theme: "dark",
-          x: {
-            formatter: (val) =>
-              new Intl.NumberFormat("fr-FR").format(val) + " €"
-          },
-          y: {
-            formatter: (val) =>
-              new Intl.NumberFormat("fr-FR").format(val) + " €"
-          }
+          theme: "dark"
         }
       }}
     />
   </section>
 )}
+
 
 
         </main>

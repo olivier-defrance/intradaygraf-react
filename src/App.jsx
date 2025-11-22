@@ -84,23 +84,6 @@ const toggleActif5 = () => {
 
   const [darkMode, setDarkMode] = useState(false);
 
-useEffect(() => {
-  const canvas = document.querySelector(".apexcharts-canvas");
-
-  if (canvas) {
-    const stopZoom = (e) => {
-      if (e.touches && e.touches.length > 1) e.preventDefault();
-    };
-
-    canvas.addEventListener("touchmove", stopZoom, { passive: false });
-    canvas.addEventListener("touchstart", stopZoom, { passive: false });
-
-    return () => {
-      canvas.removeEventListener("touchmove", stopZoom);
-      canvas.removeEventListener("touchstart", stopZoom);
-    };
-  }
-}, []);
 
 useEffect(() => {
   const handleResize = () => {
@@ -274,26 +257,27 @@ setBestPerformance(
     <div className={`app-root ${darkMode ? "theme-dark" : "theme-light"}`}>
       <div className="app-gradient" />
       <div className="app-shell">
-        <header className="app-header">
-          <div>
-            <h1 className="app-title">Simulateur IntradayGraf 2026</h1>
-            <p className="app-subtitle">
-              Basé sur l&apos;historique des résultats du robot sur l&apos;actif
-              « Allemagne 40 Cash » pour la période du 01/01/2017 au 10/11/2025
-            </p>
-          </div>
-          <button
-            type="button"
-            className="theme-toggle"
-            onClick={toggleTheme}
-            aria-label="Changer de thème"
-          >
-            <span className="theme-toggle-icon">{darkMode ? "🌙" : "🌞"}</span>
-            <span className="theme-toggle-label">
-              {darkMode ? "Mode sombre" : "Mode clair"}
-            </span>
-          </button>
-        </header>
+<header className="header-hero">
+  <div style={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
+  }}>
+    
+    <div>
+      <h1>Simulateur IntradayGraf 2026</h1>
+      <h2>
+        Basé sur l'historique des résultats du robot (2017 → 2025)
+      </h2>
+    </div>
+
+    <div className="header-right">
+      {/* Ton bouton mode clair/sombre reste ici */}
+      {darkModeSwitch}
+    </div>
+
+  </div>
+</header>
 
         <main className="app-main">
           {/* Bloc paramètres */}
@@ -427,7 +411,7 @@ setBestPerformance(
           {/* Résultats */}
           {result && (
             <section className="card card-results">
-              <h2 className="card-title">📊 Paramétrage optimal constaté sur la période historique du 01/01/2017 au 10/11/2025</h2>
+              <h2 className="card-title">📊 Paramétrage optimal constaté sur la période du 01/01/2017 au 10/11/2025</h2>
               <p className="context-text">
                 Capital {formatMoney(result.capital)} • Drawdown max accepté{" "}
                 {formatMoney(result.ddMax)}
@@ -518,7 +502,7 @@ setBestPerformance(
 {allPoints.length > 0 && (
   <section className="card card-charts">
 
-    <h2 className="card-title">📊 Performance vs Risque constaté sur la période historique du 01/01/2017 au 10/11/2025</h2>
+    <h2 className="card-title">📊 Performance vs Risque constaté sur la période du 01/01/2017 au 10/11/2025</h2>
 
     {/* === FILTRES ACTIFS === */}
     <div className="filters-actifs" style={{ marginBottom: "1rem" }}>
@@ -679,7 +663,7 @@ setBestPerformance(
 		  {/* Bloc code robot */}
 			{result && (
 			  <section className="card card-results">
-				<h2 className="card-title">🧾 Paramétrage dans le code du robot</h2>
+				<h2 className="card-title">🧾 Paramétrage du robot</h2>
 
 			{/* BLOC 1 — paramètres généraux */}
 			<div className="copy-row">

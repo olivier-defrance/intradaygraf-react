@@ -460,33 +460,6 @@ setBestPerformance(
             </section>
           )}
 		  
-		  {allPoints.length > 0 && (
-			  <section className="card card-charts">
-				{/* === SECTION GRAPHIQUE === */}
-			  <h2 className="card-title">📊 Performance vs Risque</h2>
-
-			  {/* === FILTRES ACTIFS === */}
-			  <div className="filters-actifs" style={{ marginBottom: "1rem" }}>
-				<label>
-				  <input
-					type="checkbox"
-					checked={filterActif1}
-					onChange={() => setFilterActif1(!filterActif1)}
-				  />{" "}
-				  Allemagne 40 Cash (1€)
-				</label>
-
-				<label style={{ marginLeft: "1rem" }}>
-				  <input
-					type="checkbox"
-					checked={filterActif5}
-					onChange={() => setFilterActif5(!filterActif5)}
-				  />{" "}
-				  Allemagne 40 Cash (5€)
-				</label>
-			  </div>
-
-			  {/* === CHART === */}
 {allPoints.length > 0 && (
   <section className="card card-charts">
 
@@ -644,12 +617,6 @@ setBestPerformance(
     />
   </section>
 )}
-
-
-
-			</section>
-
-			)}
 		  
 		  
 		  {/* Bloc code robot */}

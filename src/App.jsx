@@ -496,57 +496,23 @@ setBestPerformance(
 
     {/* === FILTRES ACTIFS === */}
  
-<div className="filters-actifs" style={{ marginBottom: "1rem" }}>
-  
-  {/* Actif 1€ */}
-  <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-    <input
-      type="checkbox"
-      checked={filterActif1}
-      onChange={toggleActif1}
-    />
-
-    {/* Pastille ronde bleu clair */}
-    <span
-      style={{
-        width: "14px",
-        height: "14px",
-        borderRadius: "50%",       // rond
-        backgroundColor: "#64b5f6" // couleur actif 1€
-      }}
-    ></span>
-
-    Allemagne 40 Cash (1€)
-  </label>
-
-  {/* Actif 5€ */}
-  <label
-    style={{
-      marginLeft: "1rem",
-      display: "flex",
-      alignItems: "center",
-      gap: "8px"
-    }}
-  >
-    <input
-      type="checkbox"
-      checked={filterActif5}
-      onChange={toggleActif5}
-    />
-
-    {/* Pastille ronde bleu foncé */}
-    <span
-      style={{
-        width: "14px",
-        height: "14px",
-        borderRadius: "50%",
-        backgroundColor: "#1565c0" // couleur actif 5€
-      }}
-    ></span>
-
-    Allemagne 40 Cash (5€)
-  </label>
+<div className="filters-actifs" style={{ marginBottom: "1rem", display: "flex", flexWrap: "wrap", gap: "1rem" }}>
+<label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+<div className="switch">
+<input type="checkbox" checked={filterActif1} onChange={toggleActif1} />
+<span className="slider"></span>
 </div>
+<span>Allemagne 40 Cash (1€)</span>
+</label>
+
+
+<label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+<div className="switch">
+<input type="checkbox" checked={filterActif5} onChange={toggleActif5} />
+<span className="slider"></span>
+</div>
+<span>Allemagne 40 Cash (5€)</span>
+</label>
 
 
     {/* === CHART === */}

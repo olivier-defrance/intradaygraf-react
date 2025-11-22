@@ -576,15 +576,21 @@ setBestPerformance(
           name: "Toutes les stratégies",
           data: allPoints.map((p) => ({
             x: p.Drawdown,
-            y: p.Gain,
-            meta: p
+            y: Math.round(p.Gain),       // Gain sans décimales
+            meta: p,
+            color:
+              p.Actif === "Allemagne 40 cash (1€)"
+                ? "#64b5f6"             // bleu clair
+                : p.Actif === "Allemagne 40 cash (5€)"
+                ? "#1565c0"             // bleu foncé
+                : "#90caf9"             // neutre
           })),
         },
         bestSerenite && {
           name: "🧘 Sérénité",
           data: [{
             x: bestSerenite.Drawdown,
-            y: bestSerenite.Gain,
+            y: Math.round(bestSerenite.Gain),
             meta: bestSerenite
           }],
         },
@@ -592,7 +598,7 @@ setBestPerformance(
           name: "⚡ Performance",
           data: [{
             x: bestPerformance.Drawdown,
-            y: bestPerformance.Gain,
+            y: Math.round(bestPerformance.Gain),
             meta: bestPerformance
           }],
         },
@@ -607,22 +613,29 @@ setBestPerformance(
         xaxis: {
           title: { text: "Drawdown (€)" },
           tickAmount: 6,
-          labels: {
-            formatter: (val) => Math.round(val)
-          }
+          labels: { formatter: (val) => Math.round(val) }
         },
 
         yaxis: {
           title: { text: "Gain (€)" },
-          labels: {
-            formatter: (val) => Math.round(val)
-          }
+          labels: { formatter: (val) => Math.round(val) }
         },
 
+        // === COULEUR AUTOMATIQUE SELON L’ACTIF ===
         markers: {
           size: 7,
           strokeWidth: 1,
-          hover: { size: 9 }
+          hover: { size: 9 },
+          colors: function({ seriesIndex, dataPointIndex, w }) {
+            const point = w.config.series[seriesIndex].data[dataPointIndex];
+            if (!point || !point.meta) return "#90caf9";
+
+            const actif = point.meta.Actif;
+            if (actif === "Allemagne 40 cash (1€)") return "#64b5f6"; // bleu clair
+            if (actif === "Allemagne 40 cash (5€)") return "#1565c0"; // bleu foncé
+
+            return "#90caf9"; // autres actifs
+          }
         },
 
         tooltip: {
@@ -635,8 +648,8 @@ setBestPerformance(
 
             return `
               <div style="padding:10px; font-size:14px">
-                <strong>${p.Gain.toFixed(0)} € de gain</strong><br/>
-                📉 Drawdown : <b>${p.Drawdown.toFixed(0)} €</b><br/>
+                <strong>${Math.round(p.Gain)} € de gain</strong><br/>
+                📉 Drawdown : <b>${Math.round(p.Drawdown)} €</b><br/>
                 🏦 Capital : <b>${p.Capital} €</b><br/>
                 📈 Actif : <b>${p.Actif}</b><br/>
                 🎯 Risque/trade : <b>${p.pRisque.toFixed(2)} %</b><br/>
@@ -654,6 +667,7 @@ setBestPerformance(
     />
   </section>
 )}
+
 
 
 

@@ -579,11 +579,10 @@ setBestPerformance(
             y: Math.round(p.Gain),       // Gain sans décimales
             meta: p,
             color:
-              p.Actif === "Allemagne 40 cash (1€)"
-                ? "#64b5f6"             // bleu clair
-                : p.Actif === "Allemagne 40 cash (5€)"
-                ? "#1565c0"             // bleu foncé
-                : "#90caf9"             // neutre
+		  const actif = String(p.Actif || "").toLowerCase();
+		  if (actif.includes("40") && actif.includes("1€")) return "#64b5f6";   // bleu clair
+		  if (actif.includes("40") && actif.includes("5€")) return "#1565c0";   // bleu foncé
+		  return "#90caf9";   
           })),
         },
         bestSerenite && {
@@ -626,16 +625,18 @@ setBestPerformance(
           size: 7,
           strokeWidth: 1,
           hover: { size: 9 },
-          colors: function({ seriesIndex, dataPointIndex, w }) {
-            const point = w.config.series[seriesIndex].data[dataPointIndex];
-            if (!point || !point.meta) return "#90caf9";
+			colors: function({ seriesIndex, dataPointIndex, w }) {
+			  const point = w.config.series[seriesIndex].data[dataPointIndex];
+			  if (!point || !point.meta) return "#90caf9";
 
-            const actif = point.meta.Actif;
-            if (actif === "Allemagne 40 cash (1€)") return "#64b5f6"; // bleu clair
-            if (actif === "Allemagne 40 cash (5€)") return "#1565c0"; // bleu foncé
+			  const actif = String(point.meta.Actif || "").toLowerCase();
 
-            return "#90caf9"; // autres actifs
-          }
+			  if (actif.includes("40") && actif.includes("1€")) return "#64b5f6";
+			  if (actif.includes("40") && actif.includes("5€")) return "#1565c0";
+
+			  return "#90caf9";
+			}
+
         },
 
         tooltip: {

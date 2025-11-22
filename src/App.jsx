@@ -266,7 +266,7 @@ function App() {
 
             {/* Objectif */}
             <div className="field">
-              <span className="field-label">Objectif de l&apos;optimisation</span>
+              <span className="field-label">*Objectif de l&apos;optimisation</span>
               <div className="objective-toggle">
                 <button
                   type="button"
@@ -521,111 +521,6 @@ function App() {
 			  </section>
 			)}
 
-
-		  {/* Bloc code robot */}
-{result && (
-  <section className="card card-results">
-    <h2 className="card-title">🧾 Paramétrage dans le code du robot</h2>
-
-{/* BLOC 1 — paramètres généraux */}
-<div className="copy-row">
-  <button
-    className="copy-button"
-    onClick={() =>
-      navigator.clipboard.writeText(
-`MaintienCompteActif = 1   // 1=Maintien du compte IG actif si absence de trade durant 25 jours (pour tenir compte des week-end et jours fériés)
-debutMaintien = 1         // 0=demain 9h00 1=dans 25 jours calendaires si pas de trade sur la période
-
-InstrumentDAX = ${result.Actif === "Allemagne 40 Cash (5€)" ? 1 : 0}         // 0=Allemagne 40 Cash (1€) 1=Allemagne 40 Cash (5€)
-
-CapitalAlloue = ${result.capital}      // Votre CapitalAlloue à allouer au robot !
-PerteMaxCapital = ${result.ddMax}    // Perte maximale supportée sur le capital alloué
-REINV = 0                 // Changer pour 1 pour re-investir les gains
-
-RisqueTradeAchat = ${(result.pRisque ?? 0).toFixed(2)}   // Risque par trade à l'achat en % du CapitalAlloue
-RisqueTradeVente = ${(result.pRisque ?? 0).toFixed(2)}   // Risque par trade à la vente en % du CapitalAlloue
-sortielongWE = 1          // 1=cloturer vendredi soir; 0=garder en weekend
-sortiecourtWE = 1         // 1=cloturer vendredi soir; 0=garder en weekend
-activerLongs = 1          // 1=activer les trades à l'achat, 0=désactiver les achats
-activerShorts = 1         // 1=activer les ventes 0=désactiver les ventes
-//                        // Définir les périodes de repos pour le robot
-//                        // par exemple les vendredi : repos = repos or CurrentDayOfWeek=5
-//                        // et/ou le mois de juillet : repos = repos or CurrentMonth=7
-repos = 0                 // Ici : pas de repos :)
-nbcontratsAchat = 0       // préciser le nb de contrats voulus pour chaque achat (zéro = calcul automatique)
-nbcontratsVente = 0       // préciser le nb de contrats voulus pour chaque vente (zéro = calcul automatique)
-SecurisationGain = 1      // 1= Securisation des gains actif (idée et implémentation : Artificall, adaptation GrafTrading)
-CalendrierON = 1          // 1= permet de ne pas trader les jours feriés US et EU ainsi que les jours de FED + BCE (idée et implémentation : Artificall, adaptation GrafTrading)`
-      )
-    }
-  >
-    📋 Copier ce bloc
-  </button>
-</div>
-
-<pre className="robot-code-block">
-{`MaintienCompteActif = 1   // 1=Maintien du compte IG actif si absence de trade durant 25 jours
-debutMaintien = 1         // 0=demain 9h00 1=dans 25 jours calendaires si pas de trade sur la période
-
-InstrumentDAX = `}
-<span className="dynamic-value">
-  {result.Actif === "Allemagne 40 Cash (5€)" ? 1 : 0}
-</span>
-{`        // 0=Allemagne 40 Cash (1€) 1=Allemagne 40 Cash (5€)
-
-CapitalAlloue = `}
-<span className="dynamic-value">{result.capital}</span>
-{`     // Votre CapitalAlloue à allouer au robot !
-PerteMaxCapital = `}
-<span className="dynamic-value">{result.ddMax}</span>
-{`   // Perte maximale supportée sur le capital alloué
-REINV = 0                 // Changer pour 1 pour re-investir les gains
-
-RisqueTradeAchat = `}
-<span className="dynamic-value">{(result.pRisque ?? 0).toFixed(2)}</span>
-{`  // Risque par trade à l'achat en % du CapitalAlloue
-RisqueTradeVente = `}
-<span className="dynamic-value">{(result.pRisque ?? 0).toFixed(2)}</span>
-{`  // Risque par trade à la vente en % du CapitalAlloue
-sortielongWE = 1          // 1=cloturer vendredi soir; 0=garder en weekend
-sortiecourtWE = 1         // 1=cloturer vendredi soir; 0=garder en weekend
-activerLongs = 1          // 1=activer les trades à l'achat, 0=désactiver les achats
-activerShorts = 1         // 1=activer les ventes 0=désactiver les ventes
-
-repos = 0                 // Périodes de repos (0 = aucun)
-nbcontratsAchat = 0       // préciser le nb de contrats voulus pour chaque achat (zéro = calcul automatique)
-nbcontratsVente = 0       // préciser le nb de contrats voulus pour chaque vente (zéro = calcul automatique)
-SecurisationGain = 1      // 1= Securisation des gains actif (idée et implémentation : Artificall, adaptation GrafTrading)
-CalendrierON = 1          // Filtre jours fériés + FED/BCE
-`}
-</pre>
-
-
-{/* BLOC 2 — QteMaxVente */}
-<div className="copy-row">
-  <button
-    className="copy-button"
-    onClick={() =>
-      navigator.clipboard.writeText(
-`QteMaxVente = Capital / (ValeurPointDax*Close*0.05) * ${result.pCapitalVente.toFixed(2)} // ${Math.round(result.pCapitalVente * 100)}% du Capital max est utilisé pour des ventes`
-      )
-    }
-  >
-    📋 Copier ce bloc
-  </button>
-</div>
-
-<pre className="robot-code-block">
-{`QteMaxVente = Capital / (ValeurPointDax*Close*0.05) * `}
-<span className="dynamic-value">
-  {result.pCapitalVente.toFixed(2)}
-</span>
-{`     // `}
-{Math.round(result.pCapitalVente * 100)}
-{`% du capital max utilisé pour les ventes`}
-</pre>
-  </section>
-)}
 
 
         </main>

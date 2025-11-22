@@ -84,6 +84,23 @@ const toggleActif5 = () => {
 
   const [darkMode, setDarkMode] = useState(false);
 
+useEffect(() => {
+  const canvas = document.querySelector(".apexcharts-canvas");
+
+  if (canvas) {
+    const stopZoom = (e) => {
+      if (e.touches && e.touches.length > 1) e.preventDefault();
+    };
+
+    canvas.addEventListener("touchmove", stopZoom, { passive: false });
+    canvas.addEventListener("touchstart", stopZoom, { passive: false });
+
+    return () => {
+      canvas.removeEventListener("touchmove", stopZoom);
+      canvas.removeEventListener("touchstart", stopZoom);
+    };
+  }
+}, []);
 
 useEffect(() => {
   const handleResize = () => {

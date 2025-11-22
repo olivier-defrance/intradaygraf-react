@@ -642,7 +642,16 @@ setBestPerformance(
     options={{
       chart: {
         zoom: { enabled: true },
-        toolbar: { show: true },
+        toolbar: { show: true,
+		  tools: {
+			download: true,
+			selection: false,
+			zoom: false,
+			zoomin: true,
+			zoomout: true,
+			pan: false,
+			reset: true
+		  } },
       },
 
       colors: [], // important pour que fillColor fonctionne

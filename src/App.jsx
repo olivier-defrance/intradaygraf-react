@@ -43,6 +43,7 @@ function App() {
   const [allPoints, setAllPoints] = useState([]);
   const [bestSerenite, setBestSerenite] = useState(null);
   const [bestPerformance, setBestPerformance] = useState(null);
+  const [chartError, setChartError] = useState("");
 
 
   const [darkMode, setDarkMode] = useState(false);

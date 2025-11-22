@@ -82,23 +82,14 @@ const toggleActif5 = () => {
 	  return true;
 	});
 
-
-	useEffect(() => {
-	  if (result) {
-		const el = document.getElementById("result-section");
-		if (el) {
-		  el.scrollIntoView({ behavior: "smooth", block: "start" });
-		}
-	  }
-	}, [result]);
-	useEffect(() => {
-	  const handleResize = () => {
-		setShowToolbar(window.innerWidth > 768); // toolbar visible uniquement desktop
-	  };
-	  handleResize();          // appel initial
-	  window.addEventListener("resize", handleResize);
-	  return () => window.removeEventListener("resize", handleResize);
-	}, []);
+useEffect(() => {
+  const handleResize = () => {
+    setShowToolbar(window.innerWidth > 768); // toolbar visible uniquement desktop
+  };
+  handleResize();          // appel initial
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
 
   // --- Charger la liste des capitaux ---
   useEffect(() => {
@@ -398,12 +389,11 @@ setBestPerformance(
 
           {/* Résultats */}
           {result && (
-		  <div id="result-section">
             <section className="card card-results">
               <h2 className="card-title">📊 Paramétrage optimal constaté en backtest (2017 → 10/11/2025)</h2>
               <p className="context-text">
                 Capital {formatMoney(result.capital)} • Drawdown max accepté{" "}
-                {formatMoney(result.ddMax)}
+                {formatMoney(result.ddMax)} • {"serenite" ? "🧘‍♂️ Sérénité" : "⚡ Performance"}
               </p>
 
               <div className="results-grid">
@@ -486,7 +476,6 @@ setBestPerformance(
                 </div>
               </div>
             </section>
-			</div>
           )}
 		  
 

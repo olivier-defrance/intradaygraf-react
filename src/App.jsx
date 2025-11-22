@@ -530,7 +530,20 @@ setBestPerformance(
 				  options={{
 					chart: {
 					  zoom: { enabled: true },
-					  toolbar: { show: true }
+					  toolbar: {
+						  download: true,  
+						  selection: true,
+						  zoom: false,
+						  zoomin: true,
+						  zoomout: true,
+						  pan: true,
+						  reset: true
+						},
+						export: {
+						  csv: {
+							enabled: false   
+						  }
+						}
 					},
 
 					colors: [],

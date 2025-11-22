@@ -589,18 +589,25 @@ setBestPerformance(
 
         colors: [], // indispensable pour activer fillColor par point
 
-        xaxis: {
-          title: { text: "Gain (€)" },
-          tickAmount: 8,   // nombre max de ticks → ApexCharts optimise
-  
-			  labels: {
-				formatter: (value) => {
-				  const v = Math.round(value);
-				  // Affiche uniquement si multiple de 1000
-				  return v % 1000 === 0 ? `${v} €` : "";
-				}
-			  }
-			},
+		xaxis: {
+		  title: { text: "Gain (€)" },
+		  tickAmount: 8,
+		  labels: {
+			formatter: (value) => Math.round(value),
+		  },
+		  // ⬇️ FORCE les ticks à être des multiples de 1000
+		  tickPlacement: "on",
+		  tickAmount: undefined,
+		  min: (function () {
+			const minGain = Math.min(...filteredPoints.map(p => Math.round(p.Gain)));
+			return Math.floor(minGain / 1000) * 1000;
+		  })(),
+		  max: (function () {
+			const maxGain = Math.max(...filteredPoints.map(p => Math.round(p.Gain)));
+			return Math.ceil(maxGain / 1000) * 1000;
+		  })(),
+		  stepSize: 1000   // ← MAGIQUE : 1 tick = 1000 €
+		},
 
         yaxis: {
           title: { text: "Drawdown (€)" },

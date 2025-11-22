@@ -591,24 +591,12 @@ setBestPerformance(
 
 		xaxis: {
 		  title: { text: "Gain (€)" },
+		  tickAmount: 6,
+		  min: 0,
+		  max: Math.ceil(Math.max(...filteredPoints.map(p => p.Gain)) / 1000) * 1000,
 		  labels: {
 			formatter: (v) => Math.round(v)
-		  },
-
-		  // Ticks multiples de 1000
-		  min: (function () {
-			if (filteredPoints.length === 0) return 0;
-			const minGain = Math.min(...filteredPoints.map(p => Math.round(p.Gain)));
-			return Math.floor(minGain / 1000) * 1000;
-		  })(),
-
-		  max: (function () {
-			if (filteredPoints.length === 0) return 1000;
-			const maxGain = Math.max(...filteredPoints.map(p => Math.round(p.Gain)));
-			return Math.ceil(maxGain / 1000) * 1000;
-		  })(),
-
-		  stepSize: 1000
+		  }
 		},
 
         yaxis: {

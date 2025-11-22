@@ -82,9 +82,6 @@ const toggleActif5 = () => {
 	  return true;
 	});
 
-  const [darkMode, setDarkMode] = useState(false);
-
-
 useEffect(() => {
   const handleResize = () => {
     setShowToolbar(window.innerWidth > 768); // toolbar visible uniquement desktop
@@ -93,11 +90,6 @@ useEffect(() => {
   window.addEventListener("resize", handleResize);
   return () => window.removeEventListener("resize", handleResize);
 }, []);
-
-  // Appliquer le thème clair au chargement
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", "light");
-  }, []);
 
   // --- Charger la liste des capitaux ---
   useEffect(() => {
@@ -244,33 +236,8 @@ setBestPerformance(
     }
   };
 
-  // --- Thème ---
-  const toggleTheme = () => {
-    setDarkMode((prev) => !prev);
-    document.documentElement.setAttribute(
-      "data-theme",
-      !darkMode ? "dark" : "light"
-    );
-  };
-
-const darkModeSwitch = (
-  <button
-    className="theme-toggle"
-    onClick={toggleTheme}
-    style={{
-      padding: "8px 14px",
-      borderRadius: "8px",
-      fontSize: "14px",
-      cursor: "pointer"
-    }}
-  >
-    {darkMode ? "☀️ Clair" : "🌙 Sombre"}
-  </button>
-);
-
-
   return (
-    <div className={`app-root ${darkMode ? "theme-dark" : "theme-light"}`}>
+    <div className="app-root">
       <div className="app-gradient" />
       <div className="app-shell">
 <header className="header-hero">
@@ -287,10 +254,6 @@ const darkModeSwitch = (
       </h2>
     </div>
 
-    <div className="header-right">
-      {/* Ton bouton mode clair/sombre reste ici */}
-      {darkModeSwitch}
-    </div>
 
   </div>
 </header>

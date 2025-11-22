@@ -519,9 +519,6 @@ const darkModeSwitch = (
 {/* === SECTION GRAPHIQUE === */}
 {allPoints.length > 0 && result && (
   <section className="card card-charts">
-
-  <section className="card card-charts">
-
     <h2 className="card-title">
       📊 Performance vs Risque constaté en backtest (2017 → 10/11/2025)
     </h2>

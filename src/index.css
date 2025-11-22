@@ -4,8 +4,8 @@
   --bg-card: #ffffff;
   --bg-card-soft: #f9fafb;
   
-  --border-subtle: rgba(148, 163, 184, 0.25);
-  --border-strong: rgba(148, 163, 184, 0.45);
+  --border-subtle: rgba(148, 163, 184, 0.3);
+  --border-strong: rgba(148, 163, 184, 0.6);
   --text-main: #0f172a;
   --text-muted: #6b7280;
   --accent: #2563eb;
@@ -29,8 +29,7 @@
 
 [data-theme="light"] {
 
-  --border-subtle: rgba(148, 163, 184, 0.3);
-  --border-strong: rgba(148, 163, 184, 0.6);
+
 
 
 

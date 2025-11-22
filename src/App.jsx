@@ -554,9 +554,23 @@ setBestPerformance(
 					colors: [], // IMPORTANT : permet à fillColor de fonctionner
 
 					xaxis: {
-					  title: { text: "Gain (€)" }, // Axe X inversé
-					  tickAmount: 6,
-					  labels: { formatter: (v) => Math.round(v) },
+					  title: { text: "Gain (€)" },
+					  tickAmount: 8,
+					  labels: {
+						formatter: (value) => Math.round(value),
+					  },
+					  // ⬇️ FORCE les ticks à être des multiples de 500
+					  tickPlacement: "on",
+					  tickAmount: undefined,
+					  min: (function () {
+						const minGain = Math.min(...filteredPoints.map(p => Math.round(p.Gain)));
+						return Math.floor(minGain / 500) * 500;
+					  })(),
+					  max: (function () {
+						const maxGain = Math.max(...filteredPoints.map(p => Math.round(p.Gain)));
+						return Math.ceil(maxGain / 500) * 500;
+					  })(),
+					  stepSize: 500   // ← MAGIQUE : 1 tick = 500 €
 					},
 
 					yaxis: {

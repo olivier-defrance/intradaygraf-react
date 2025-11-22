@@ -266,7 +266,7 @@ function App() {
 
             {/* Objectif */}
             <div className="field">
-              <span className="field-label">*Objectif de l&apos;optimisation</span>
+              <span className="field-label">Objectif de l&apos;optimisation</span>
               <div className="objective-toggle">
                 <button
                   type="button"
@@ -521,6 +521,63 @@ function App() {
 			  </section>
 			)}
 
+{result && (
+  <section className="card card-charts">
+    <h2 className="card-title">📊 Performance vs Risque</h2>
+
+    <Chart
+      type="scatter"
+      height={350}
+      series={[
+        {
+          name: "Optimisation",
+          data: [[result.Drawdown, result.Gain]]
+        }
+      ]}
+      options={{
+        chart: {
+          zoom: { enabled: false },
+          toolbar: { show: false }
+        },
+
+        xaxis: {
+          title: { text: "Drawdown (€)" },
+          labels: {
+            formatter: (v) => Math.round(v)
+          }
+        },
+
+        yaxis: {
+          title: { text: "Gain (€)" },
+          labels: {
+            formatter: (v) => Math.round(v)
+          }
+        },
+
+        markers: {
+          size: Math.max(6, Math.min(30, result.pRisque * 1.5)),
+          colors: [
+            result.Gain / Math.max(1, result.Drawdown) > 1
+              ? "#00c853" // vert (bon ratio)
+              : "#d50000" // rouge (ratio faible)
+          ]
+        },
+
+        tooltip: {
+          theme: "dark",
+          x: {
+            formatter: (val) =>
+              new Intl.NumberFormat("fr-FR").format(val) + " €"
+          },
+          y: {
+            formatter: (val) =>
+              new Intl.NumberFormat("fr-FR").format(val) + " €"
+          }
+        }
+      }}
+    />
+  </section>
+)}
 
 
         </main>

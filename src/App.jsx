@@ -239,9 +239,9 @@ setBestPerformance(
     }
   };
   
-  	const maxDD = filteredPoints.length > 0 
-  ? Math.max(...filteredPoints.map(p => p.Drawdown))
-  : 0;
+const maxDD = allPoints.length > 0
+    ? Math.max(...allPoints.map(p => p.Drawdown))
+    : ddMax;
 
 // Définition du pas
 let step = 1000;

@@ -517,7 +517,9 @@ const darkModeSwitch = (
 		  
 
 {/* === SECTION GRAPHIQUE === */}
-{allPoints.length > 0 && (
+{allPoints.length > 0 && result && (
+  <section className="card card-charts">
+
   <section className="card card-charts">
 
     <h2 className="card-title">
@@ -525,7 +527,7 @@ const darkModeSwitch = (
     </h2>
 
     <p className="context-text">
-      Chaque point représente une combinaison différentes de paramètres utilisée par le robot avec un capital de {formatMoney(result.capital)}.
+      Chaque point représente le résultat d'un backtest avec une combinaison différente de paramètres pour un capital alloué de {formatMoney(result.capital)}.
     </p>
 
     {/* === FILTRES ACTIFS === */}

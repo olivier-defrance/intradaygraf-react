@@ -559,9 +559,8 @@ setBestPerformance(
 
 {allPoints.length > 0 && (
   <section className="card card-charts">
-    <h2 className="card-title">📊 Performance vs Risque</h2>
+    <h2 className="card-title">📊 Performance vs Risque (Toutes stratégies)</h2>
 
-    {/* Zone d'erreur debug */}
     {chartError && (
       <div style={{ background: "#330000", color: "red", padding: "10px" }}>
         <strong>Erreur ApexCharts:</strong><br />
@@ -569,44 +568,93 @@ setBestPerformance(
       </div>
     )}
 
-    {/* Chart avec try/catch */}
-    <div>
-      {(() => {
-        try {
-          return (
-            <Chart
-              type="scatter"
-              height={400}
-              series={[
-                {
-                  name: "Toutes les stratégies",
-                  data: allPoints.map((p) => [p.Drawdown, p.Gain]),
-                },
-                bestSerenite && {
-                  name: "🧘 Sérénité",
-                  data: [[bestSerenite.Drawdown, bestSerenite.Gain]],
-                },
-                bestPerformance && {
-                  name: "⚡ Performance",
-                  data: [[bestPerformance.Drawdown, bestPerformance.Gain]],
-                },
-              ].filter(Boolean)}
-              options={{
-                chart: { zoom: { enabled: true }, toolbar: { show: true } },
-                xaxis: { title: { text: "Drawdown (€)" } },
-                yaxis: { title: { text: "Gain (€)" } },
-              }}
-            />
-          );
-        } catch (err) {
-          console.error("ERREUR CHART:", err);
-          setChartError(err.message ?? String(err));
-          return <p style={{ color: "red" }}>Erreur dans le composant Chart.</p>;
+    <Chart
+      type="scatter"
+      height={420}
+      series={[
+        {
+          name: "Toutes les stratégies",
+          data: allPoints.map((p) => ({
+            x: p.Drawdown,
+            y: p.Gain,
+            meta: p
+          })),
+        },
+        bestSerenite && {
+          name: "🧘 Sérénité",
+          data: [{
+            x: bestSerenite.Drawdown,
+            y: bestSerenite.Gain,
+            meta: bestSerenite
+          }],
+        },
+        bestPerformance && {
+          name: "⚡ Performance",
+          data: [{
+            x: bestPerformance.Drawdown,
+            y: bestPerformance.Gain,
+            meta: bestPerformance
+          }],
+        },
+      ].filter(Boolean)}
+
+      options={{
+        chart: {
+          zoom: { enabled: true },
+          toolbar: { show: true }
+        },
+
+        xaxis: {
+          title: { text: "Drawdown (€)" },
+          tickAmount: 6,
+          labels: {
+            formatter: (val) => Math.round(val)
+          }
+        },
+
+        yaxis: {
+          title: { text: "Gain (€)" },
+          labels: {
+            formatter: (val) => Math.round(val)
+          }
+        },
+
+        markers: {
+          size: 7,
+          strokeWidth: 1,
+          hover: { size: 9 }
+        },
+
+        tooltip: {
+          shared: false,
+          intersect: true,
+          custom: function({ seriesIndex, dataPointIndex, w }) {
+            const p = w.globals.series[seriesIndex][dataPointIndex].meta;
+
+            if (!p) return "<div style='padding:5px'>Aucune donnée</div>";
+
+            return `
+              <div style="padding:10px; font-size:14px">
+                <strong>${p.Gain.toFixed(0)} € de gain</strong><br/>
+                📉 Drawdown : <b>${p.Drawdown.toFixed(0)} €</b><br/>
+                🏦 Capital : <b>${p.Capital} €</b><br/>
+                📈 Actif : <b>${p.Actif}</b><br/>
+                🎯 Risque/trade : <b>${p.pRisque.toFixed(2)} %</b><br/>
+                🔥 % capital ventes : <b>${Math.round(p.pCapitalVente * 100)} %</b>
+              </div>
+            `;
+          }
+        },
+
+        legend: {
+          position: "top",
+          markers: { width: 14, height: 14 }
         }
-      })()}
-    </div>
+      }}
+    />
   </section>
 )}
+
 
 
 

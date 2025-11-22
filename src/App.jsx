@@ -260,7 +260,7 @@ setBestPerformance(
 
           {/* Phrase de vigilance */}
 			<p className="warning-banner">
-			  ⚠️ Les performances passées ne préjugent pas des performances futures.
+			  ⚠️  Les performances passées ne préjugent pas des performances futures  ⚠️
 			</p>
 			
         <main className="app-main">

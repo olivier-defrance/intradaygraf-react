@@ -83,6 +83,11 @@ const toggleActif5 = () => {
 	});
 
 useEffect(() => {
+  window.scrollTo(0, 0);
+}, [result]);
+
+
+useEffect(() => {
   const handleResize = () => {
     setShowToolbar(window.innerWidth > 768); // toolbar visible uniquement desktop
   };
@@ -302,7 +307,7 @@ setBestPerformance(
             <div className="field">
               <div className="field-label-row">
                 <label className="field-label" htmlFor="ddMax">
-                  Drawdown max accepté (€)
+                  Perte maximale de capital supportée (€)
                 </label>
                 <span className="field-helper">
                   {ddMax ? `${formatMoney(ddMax)}` : ""}

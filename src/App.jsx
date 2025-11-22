@@ -76,6 +76,7 @@ function App() {
   // Filtres actifs
   const [filterActif1, setFilterActif1] = useState(true);
   const [filterActif5, setFilterActif5] = useState(true);
+  const [showToolbar, setShowToolbar] = useState(true);
 
 	const filteredPoints = allPoints.filter((p) => {
 	  if (p.Actif === "Allemagne 40 Cash (1€)" && !filterActif1) return false;
@@ -84,6 +85,16 @@ function App() {
 	});
 
   const [darkMode, setDarkMode] = useState(false);
+
+
+useEffect(() => {
+  const handleResize = () => {
+    setShowToolbar(window.innerWidth > 768); // toolbar visible uniquement desktop
+  };
+  handleResize();          // appel initial
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
 
   // Appliquer le thème clair au chargement
   useEffect(() => {
@@ -572,15 +583,17 @@ setBestPerformance(
       options={{
         chart: {
           zoom: { enabled: true },
-          toolbar: {
-            download: false,
-            selection: true,
-            zoom: false,
-            zoomin: true,
-            zoomout: true,
-            pan: true,
-            reset: true
-          }
+          toolbar: showToolbar ? {
+				download: false,
+				selection: true,
+				zoom: false,
+				zoomin: true,
+				zoomout: true,
+				pan: true,
+				reset: true
+			} : {
+				show: false
+			}
         },
 
         colors: [],

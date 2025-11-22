@@ -513,6 +513,7 @@ setBestPerformance(
 </div>
 <span>Allemagne 40 Cash (5€)</span>
 </label>
+</div>
 
 
     {/* === CHART === */}

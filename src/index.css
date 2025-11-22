@@ -610,3 +610,20 @@ h2 {
     font-size: 0.95rem;
   }
 }
+
+/* Conteneur des cases à cocher */
+.filters-actifs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  align-items: center;
+}
+
+/* Sur mobile → passer en 2 lignes */
+@media (max-width: 600px) {
+  .filters-actifs {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import "./index.css";
-import Chart from "react-apexcharts";
 
 const API_URL = "https://api.olivdef.fr";
 
@@ -518,72 +517,7 @@ CalendrierON = 1          // Filtre jours fériés + FED/BCE
 {`% du capital max utilisé pour les ventes`}
 </pre>
   </section>
-
-{result && (
-  <section className="card card-charts">
-    <h2 className="card-title">📊 Performance vs Risque</h2>
-
-    <Chart
-      type="scatter"
-      height={350}
-      series={[
-        {
-          name: "Optimisation",
-          data: [
-            [
-              result.Drawdown,
-              result.Gain
-            ]
-          ]
-        }
-      ]}
-      options={{
-        chart: {
-          zoom: { enabled: false },
-          toolbar: { show: false }
-        },
-        xaxis: {
-          title: { text: "Drawdown (€)" },
-          labels: { formatter: (v) => Math.round(v) }
-        },
-        yaxis: {
-          title: { text: "Gain (€)" },
-          labels: { formatter: (v) => Math.round(v) }
-        },
-
-        // ★ Taille du point
-        markers: {
-          size: Math.max(6, Math.min(30, result.pRisque * 1.5)),
-          colors: [
-            result.Sharpe > 2
-              ? "#00c853"
-              : result.Sharpe > 1
-              ? "#ffd600"
-              : "#d50000"
-          ]
-        },
-
-        tooltip: {
-          shared: false,
-          intersect: true,
-          theme: "dark",
-          x: {
-            formatter: (val) =>
-              new Intl.NumberFormat("fr-FR").format(val) + " €"
-          },
-          y: {
-            formatter: (val) =>
-              new Intl.NumberFormat("fr-FR").format(val) + " €"
-          }
-        }
-      }}
-    />
-  </section>
 )}
-
-)}
-
-
 
         </main>
       </div>

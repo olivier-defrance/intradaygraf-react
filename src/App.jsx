@@ -644,8 +644,8 @@ setBestPerformance(
         return `
           <div style="padding:10px; font-size:14px">
             <strong>${Math.round(p.Gain)} € de gain</strong><br/>
+			🏦 Capital : <b>${p.Capital} €</b><br/>
             📉 Drawdown : <b>${Math.round(p.Drawdown)} €</b><br/>
-            🏦 Capital : <b>${p.Capital} €</b><br/>
             📈 Actif : <b>${p.Actif}</b><br/>
             🎯 Risque/trade : <b>${p.pRisque.toFixed(2)} %</b><br/>
             🔥 % capital ventes : <b>${Math.round(p.pCapitalVente * 100)} %</b>

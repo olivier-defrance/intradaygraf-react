@@ -543,3 +543,12 @@ body {
 .apexcharts-menu-icon {
   display: none !important;
 }
+
+.apexcharts-canvas,
+.apexcharts-canvas * {
+  touch-action: pan-y !important;  /* autorise le scroll vertical mais pas le pinch */
+}
+
+.apexcharts-canvas {
+  touch-action: manipulation !important;
+}

@@ -394,9 +394,15 @@ setBestPerformance(
             <section className="card card-results">
               <h2 className="card-title">📊 Paramétrage optimal constaté en backtest (2017 → 10/11/2025)</h2>
 				<p className="context-text">
-				  Objectif utilisé {objectifUtilise && ({" "}{objectifUtilise === "serenite" ? "🧘‍♂️ Sérénité (Gain / Drawdown)" : "⚡ Performance (Gain total)"})} • Capital {formatMoney(result.capital)} • Perte maximale de capital supportée{" "}{formatMoney(result.ddMax)}
+				  Objectif utilisé{" "}
+				  {objectifUtilise && (
+					objectifUtilise === "serenite"
+					  ? "🧘‍♂️ Sérénité (Gain / Drawdown)"
+					  : "⚡ Performance (Gain total)"
+				  )}
+				  • Capital {formatMoney(result.capital)} • Perte maximale de capital supportée{" "}
+				  {formatMoney(result.ddMax)}
 				</p>
-
 
               <div className="results-grid">
                 {/* Section 1 : paramètres robot */}

@@ -488,7 +488,7 @@ setBestPerformance(
 
     <p className="context-text">
       Chaque point du graphique représente le résultat d'un backtest utilisant une combinaison différente de paramètres pour un capital alloué de {formatMoney(result.capital)}.
-      Sélectionnez un point du graphique pour voir la combinaison de paramètres associée.
+      Sélectionnez un point sur le graphique pour voir la combinaison de paramètres associée.
     </p>
 
     {/* === FILTRES ACTIFS === */}
@@ -528,7 +528,6 @@ setBestPerformance(
       series={[
         {
           name: "Toutes les stratégies",
-		  showInLegend: false,
           data: filteredPoints.map((p) => ({
             x: Math.round(p.Gain),       // Gain → axe horizontal
             y: p.Drawdown,               // Drawdown → axe vertical
@@ -577,6 +576,9 @@ setBestPerformance(
             }
           }
         },
+	  legend: {
+		show: false   // 👈 on masque complètement la légende ApexCharts
+		},
 
         colors: [], // indispensable pour activer fillColor par point
 

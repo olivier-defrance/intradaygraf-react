@@ -420,9 +420,9 @@ const darkModeSwitch = (
           </section>
 
           {/* Phrase de vigilance */}
-          <p className="risk-warning">
-            ⚠️ Les performances passées ne préjugent pas des performances futures.
-          </p>
+			<p className="warning-banner">
+			  ⚠️ Les performances passées ne préjugent pas des performances futures.
+			</p>
 
           {/* Résultats */}
           {result && (

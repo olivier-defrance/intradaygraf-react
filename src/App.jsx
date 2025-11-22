@@ -541,7 +541,7 @@ setBestPerformance(
 					  tools: {
 						download: false,
 						selection: true,
-						zoom: false,
+						zoom: true,
 						zoomin: true,
 						zoomout: true,
 						pan: false,

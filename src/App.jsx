@@ -541,10 +541,10 @@ setBestPerformance(
 					  tools: {
 						download: false,
 						selection: true,
-						zoom: true,
+						zoom: false,
 						zoomin: true,
 						zoomout: true,
-						pan: false,
+						pan: true,
 						reset: true
 					  } },
 				  },

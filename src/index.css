@@ -586,3 +586,27 @@ body {
 .legend-performance::before {
   background: #ffab00; /* même couleur que ton point Performance */
 }
+
+/* --- TITRES PAR DÉFAUT (desktop/tablette) --- */
+h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+}
+
+/* --- VERSION MOBILE --- */
+@media (max-width: 600px) {
+  h2 {
+    font-size: 1.25rem; /* plus petit */
+    margin-bottom: 0.6rem;
+  }
+
+  h1 {
+    font-size: 1.5rem; /* si tu veux également réduire le titre principal */
+  }
+
+  .banner {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+}

@@ -499,6 +499,8 @@ setBestPerformance(
     </p>
 
     {/* === FILTRES ACTIFS === */}
+
+
 <div className="filters-actifs" style={{ marginBottom: "1rem" }}>
   
   {/* Actif 1€ */}
@@ -506,7 +508,11 @@ setBestPerformance(
     <input
       type="checkbox"
       checked={filterActif1}
-      onChange={() => toggleActif("1")}
+      onChange={() => {
+            // empêcher les deux cases d’être décochées
+            if (!filterActif1 && !filterActif5) return;
+            setFilterActif1(!filterActif1);
+          }}
     />
 
     {/* Pastille ronde bleu clair */}
@@ -534,7 +540,11 @@ setBestPerformance(
     <input
       type="checkbox"
       checked={filterActif5}
-      onChange={() => toggleActif("5")}
+      onChange={() => {
+            // empêcher les deux cases d’être décochées
+            if (!filterActif5 && !filterActif1) return;
+            setFilterActif5(!filterActif5);
+          }}
     />
 
     {/* Pastille ronde bleu foncé */}
@@ -550,6 +560,7 @@ setBestPerformance(
     Allemagne 40 Cash (5€)
   </label>
 </div>
+
 
     {/* === CHART === */}
 	<div className="no-touch-zoom">

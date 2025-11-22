@@ -620,7 +620,7 @@ setBestPerformance(
     />
 	<div className="chart-legend">
 	  <span className="legend-item legend-serenite">
-		🧘 Sérénité
+		🧘‍♂️ Sérénité
 	  </span>
 	  <span className="legend-item legend-performance">
 		⚡ Performance

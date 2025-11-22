@@ -539,8 +539,7 @@ body {
   z-index: 5;
 }
 
-.apexcharts-menu-item.exportCSV,
-.apexcharts-menu-item.exportPNG,
-.apexcharts-menu-item.exportSVG {
+/* Masquer uniquement le bouton "Menu" dans la toolbar ApexCharts */
+.apexcharts-menu-icon {
   display: none !important;
 }

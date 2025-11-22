@@ -653,19 +653,18 @@ setBestPerformance(
 				className="copy-button"
 				onClick={() =>
 				  navigator.clipboard.writeText(
-			`MaintienCompteActif = 1   // 1=Maintien du compte IG actif si absence de trade durant 25 jours (pour tenir compte des week-end et jours fériés)
-			debutMaintien = 1         // 0=demain 9h00 1=dans 25 jours calendaires si pas de trade sur la période
+`MaintienCompteActif = 1   // 1=Maintien du compte IG actif si absence de trade durant 25 jours (pour tenir compte des week-end et jours fériés)
+debutMaintien = 1         // 0=demain 9h00 1=dans 25 jours calendaires si pas de trade sur la période
 
-			InstrumentDAX = ${result.Actif === "Allemagne 40 Cash (5€)" ? 1 : 0}         // 0=Allemagne 40 Cash (1€) 1=Allemagne 40 Cash (5€)
+InstrumentDAX = ${result.Actif === "Allemagne 40 Cash (5€)" ? 1 : 0}         // 0=Allemagne 40 Cash (1€) 1=Allemagne 40 Cash (5€)
+CapitalAlloue = ${result.capital}      // Votre CapitalAlloue à allouer au robot !
+PerteMaxCapital = ${result.ddMax}    // Perte maximale supportée sur le capital alloué
+REINV = 0                 // Changer pour 1 pour re-investir les gains
 
-			CapitalAlloue = ${result.capital}      // Votre CapitalAlloue à allouer au robot !
-			PerteMaxCapital = ${result.ddMax}    // Perte maximale supportée sur le capital alloué
-			REINV = 0                 // Changer pour 1 pour re-investir les gains
-
-			RisqueTradeAchat = ${(result.pRisque ?? 0).toFixed(2)}   // Risque par trade à l'achat en % du CapitalAlloue
-			RisqueTradeVente = ${(result.pRisque ?? 0).toFixed(2)}   // Risque par trade à la vente en % du CapitalAlloue
-			sortielongWE = 1          // 1=cloturer vendredi soir; 0=garder en weekend
-			sortiecourtWE = 1         // 1=cloturer vendredi soir; 0=garder en weekend
+RisqueTradeAchat = ${(result.pRisque ?? 0).toFixed(2)}   // Risque par trade à l'achat en % du CapitalAlloue
+RisqueTradeVente = ${(result.pRisque ?? 0).toFixed(2)}   // Risque par trade à la vente en % du CapitalAlloue
+sortielongWE = 1          // 1=cloturer vendredi soir; 0=garder en weekend
+sortiecourtWE = 1         // 1=cloturer vendredi soir; 0=garder en weekend
 			activerLongs = 1          // 1=activer les trades à l'achat, 0=désactiver les achats
 			activerShorts = 1         // 1=activer les ventes 0=désactiver les ventes
 			//                        // Définir les périodes de repos pour le robot

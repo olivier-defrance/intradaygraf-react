@@ -531,7 +531,7 @@ setBestPerformance(
 	<div className="no-touch-zoom">
     <Chart
       type="scatter"
-      height={420}
+      height={500}
       series={[
         {
           name: "Toutes les stratégies",

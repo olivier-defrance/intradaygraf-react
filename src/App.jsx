@@ -487,134 +487,113 @@ setBestPerformance(
 			  </div>
 
 			  {/* === CHART === */}
-<Chart
-  type="scatter"
-  height={420}
-  series={[
-    {
-      name: "Toutes les stratégies",
-      data: filteredPoints.map((p) => ({
-        x: Math.round(p.Gain),    // Axe X = Gain
-        y: p.Drawdown,            // Axe Y = Drawdown
-        meta: p,
-        fillColor: (() => {
-          const actif = String(p.Actif || "").toLowerCase();
-          if (actif.includes("1€")) return "#64b5f6";   // bleu clair
-          if (actif.includes("5€")) return "#1565c0";   // bleu foncé
-          return "#90caf9";
-        })()
-      }))
-    },
+				<Chart
+				  type="scatter"
+				  height={420}
+				  series={[
+					{
+					  name: "Toutes les stratégies",
+					  data: filteredPoints.map((p) => ({
+						x: Math.round(p.Gain),      // Gain → axe X
+						y: p.Drawdown,              // Drawdown → axe Y
+						meta: p,
+						fillColor: (() => {
+						  const actif = String(p.Actif || "").toLowerCase();
+						  if (actif.includes("1€")) return "#64b5f6";   // bleu clair
+						  if (actif.includes("5€")) return "#1565c0";   // bleu foncé
+						  return "#90caf9";
+						})()
+					  }))
+					},
+					bestSerenite && {
+					  name: "🧘 Sérénité",
+					  data: [{
+						x: Math.round(bestSerenite.Gain),
+						y: bestSerenite.Drawdown,
+						meta: bestSerenite,
+						fillColor: "#00e676",
+						marker: { size: 16, strokeWidth: 2, strokeColor: "#00c853" }
+					  }]
+					},
+					bestPerformance && {
+					  name: "⚡ Performance",
+					  data: [{
+						x: Math.round(bestPerformance.Gain),
+						y: bestPerformance.Drawdown,
+						meta: bestPerformance,
+						fillColor: "#ffab00",
+						marker: { size: 16, strokeWidth: 2, strokeColor: "#ff6f00" }
+					  }]
+					}
+				  ].filter(Boolean)}
 
-    bestSerenite && {
-      name: "🧘 Sérénité",
-      data: [{
-        x: Math.round(bestSerenite.Gain),
-        y: bestSerenite.Drawdown,
-        meta: bestSerenite,
-        fillColor: "#00e676",
-        marker: {
-          size: 18,
-          strokeWidth: 3,
-          strokeColor: "#00c853"
-        }
-      }]
-    },
+				  options={{
+					chart: {
+					  zoom: { enabled: true },
+					  toolbar: {
+						  download: false,  
+						  selection: true,
+						  zoom: false,
+						  zoomin: true,
+						  zoomout: true,
+						  pan: true,
+						  reset: true
+						}
+					},
 
-    bestPerformance && {
-      name: "⚡ Performance",
-      data: [{
-        x: Math.round(bestPerformance.Gain),
-        y: bestPerformance.Drawdown,
-        meta: bestPerformance,
-        fillColor: "#ffab00",
-        marker: {
-          size: 18,
-          strokeWidth: 3,
-          strokeColor: "#ff6f00"
-        }
-      }]
-    }
-  ].filter(Boolean)}
+					colors: [],
 
-  options={{
-    chart: {
-      zoom: { enabled: true },
-      toolbar: {
-        show: true,
-        tools: {
-          download: false,   // 🔥 enlève CSV / PNG / SVG
-          selection: true,
-          zoom: true,
-          zoomin: true,
-          zoomout: true,
-          pan: false,
-          reset: true
-        }
-      }
-    },
+					// 🔄 NOUVEL AXE X = GAIN
+					xaxis: {
+					  title: { text: "Gain (€)" },
+					  tickAmount: 6,
+					  min: 0,
+					  max: Math.ceil(Math.max(...filteredPoints.map(p => p.Gain)) / 1000) * 1000,
+					  labels: {
+						formatter: (v) => Math.round(v)
+					  }
+					},
 
-    // === Autorise des couleurs différentes pour le point & le halo ===
-    fill: { type: "solid" },
+					// 🔄 NOUVEL AXE Y = DRAWDOWN
+					yaxis: {
+					  title: { text: "Drawdown (€)" },
+					  tickAmount: 6,
+					  labels: {
+						formatter: (v) => Math.round(v)
+					  }
+					},
 
-    xaxis: {
-      title: { text: "Gain (€)" },
-      tickAmount: 8,
-      labels: {
-        formatter: (v) => Math.round(v / 1000) * 1000  // multiples de 1000
-      }
-    },
+					tooltip: {
+					  shared: false,
+					  intersect: true,
+					  custom: function({ seriesIndex, dataPointIndex, w }) {
+						const p = w.config.series[seriesIndex].data[dataPointIndex].meta;
+						if (!p) return "<div style='padding:5px'>Aucune donnée</div>";
+						return `
+						  <div style="padding:10px; font-size:14px">
+							<strong>${Math.round(p.Gain)} € de gain</strong><br/>
+							📉 Drawdown : <b>${Math.round(p.Drawdown)} €</b><br/>
+							🏦 Capital : <b>${p.Capital} €</b><br/>
+							📈 Actif : <b>${p.Actif}</b><br/>
+							🎯 Risque/trade : <b>${p.pRisque.toFixed(2)} %</b><br/>
+							🔥 % capital ventes : <b>${Math.round(p.pCapitalVente * 100)} %</b>
+						  </div>
+						`;
+					  }
+					},
 
-    yaxis: {
-      title: { text: "Drawdown (€)" },
-      labels: { formatter: (v) => Math.round(v) }
-    },
+					markers: {
+					  size: 7,
+					  strokeWidth: 1,
+					  hover: { size: 9 }
+					},
 
-    markers: {
-      size: 8,
-      hover: { size: 11 },
-      strokeWidth: 5,
-
-      // === HALO HEATMAP indépendant de la couleur de l’actif ===
-      strokeColor: (seriesIndex, dataPointIndex, w) => {
-        const p = w.config.series[seriesIndex].data[dataPointIndex].meta;
-        if (!p) return "#888";
-
-        if (p.Sharpe >= 2) return "#00e676";  // vert
-        if (p.Sharpe >= 1) return "#ffeb3b";  // jaune
-        return "#ff1744";                     // rouge
-      }
-    },
-
-    tooltip: {
-      shared: false,
-      intersect: true,
-      custom: function({ seriesIndex, dataPointIndex, w }) {
-        const p = w.config.series[seriesIndex].data[dataPointIndex].meta;
-
-        if (!p) return "<div style='padding:5px;'>Aucune donnée</div>";
-
-        return `
-          <div style="padding:10px; font-size:14px;">
-            <strong>${Math.round(p.Gain)} € de gain</strong><br/>
-            📉 Drawdown : <b>${Math.round(p.Drawdown)} €</b><br/>
-            🏦 Capital : <b>${p.Capital} €</b><br/>
-            📈 Actif : <b>${p.Actif}</b><br/>
-            🎯 Risque/trade : <b>${p.pRisque.toFixed(2)} %</b><br/>
-            🔥 % capital ventes : <b>${Math.round(p.pCapitalVente * 100)} %</b>
-          </div>
-        `;
-      }
-    },
-
-    legend: {
-      position: "top",
-      markers: { width: 16, height: 16 }
-    }
-  }}
-/>
-
-
+					legend: {
+					  position: "top",
+					  markers: { width: 14, height: 14 }
+					}
+				  }}
+				/>
 
 
 			</section>
@@ -625,7 +604,7 @@ setBestPerformance(
 		  {/* Bloc code robot */}
 			{result && (
 			  <section className="card card-results">
-				<h2 className="card-title">🧾 Paramétrage du robot</h2>
+				<h2 className="card-title">🧾 Paramétrage dans le code du robot</h2>
 
 			{/* BLOC 1 — paramètres généraux */}
 			<div className="copy-row">

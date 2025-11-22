@@ -587,7 +587,7 @@ setBestPerformance(
                   data: [[bestSerenite.Drawdown, bestSerenite.Gain]],
                 },
                 bestPerformance && {
-                  name: "<span className="objective-icon">⚡</span> Performance",
+                  name: "⚡ Performance",
                   data: [[bestPerformance.Drawdown, bestPerformance.Gain]],
                 },
               ].filter(Boolean)}

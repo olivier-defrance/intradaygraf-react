@@ -499,33 +499,57 @@ setBestPerformance(
     </p>
 
     {/* === FILTRES ACTIFS === */}
-    <div className="filters-actifs" style={{ marginBottom: "1rem" }}>
-      <label>
-        <input
-          type="checkbox"
-          checked={filterActif1}
-          onChange={() => {
-            // empêcher les deux cases d’être décochées
-            if (!filterActif1 && !filterActif5) return;
-            setFilterActif1(!filterActif1);
-          }}
-        />
-        {" "}Allemagne 40 Cash (1€)
-      </label>
+<div className="filters-actifs" style={{ marginBottom: "1rem" }}>
+  
+  {/* Actif 1€ */}
+  <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+    <input
+      type="checkbox"
+      checked={filterActif1}
+      onChange={() => toggleActif("1")}
+    />
 
-      <label style={{ marginLeft: "1rem" }}>
-        <input
-          type="checkbox"
-          checked={filterActif5}
-          onChange={() => {
-            // empêcher les deux cases d’être décochées
-            if (!filterActif5 && !filterActif1) return;
-            setFilterActif5(!filterActif5);
-          }}
-        />
-        {" "}Allemagne 40 Cash (5€)
-      </label>
-    </div>
+    {/* Pastille ronde bleu clair */}
+    <span
+      style={{
+        width: "14px",
+        height: "14px",
+        borderRadius: "50%",       // rond
+        backgroundColor: "#64b5f6" // couleur actif 1€
+      }}
+    ></span>
+
+    Allemagne 40 Cash (1€)
+  </label>
+
+  {/* Actif 5€ */}
+  <label
+    style={{
+      marginLeft: "1rem",
+      display: "flex",
+      alignItems: "center",
+      gap: "8px"
+    }}
+  >
+    <input
+      type="checkbox"
+      checked={filterActif5}
+      onChange={() => toggleActif("5")}
+    />
+
+    {/* Pastille ronde bleu foncé */}
+    <span
+      style={{
+        width: "14px",
+        height: "14px",
+        borderRadius: "50%",
+        backgroundColor: "#1565c0" // couleur actif 5€
+      }}
+    ></span>
+
+    Allemagne 40 Cash (5€)
+  </label>
+</div>
 
     {/* === CHART === */}
 	<div className="no-touch-zoom">

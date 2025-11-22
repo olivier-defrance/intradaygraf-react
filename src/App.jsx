@@ -43,7 +43,8 @@ function App() {
   const [allPoints, setAllPoints] = useState([]);
   const [bestSerenite, setBestSerenite] = useState(null);
   const [bestPerformance, setBestPerformance] = useState(null);
-  
+  const [chartError, setChartError] = useState("");
+
 
   const [darkMode, setDarkMode] = useState(false);
 
@@ -560,9 +561,20 @@ setBestPerformance(
   <section className="card card-charts">
     <h2 className="card-title">📊 Performance vs Risque</h2>
 
+    {/* Zone d'erreur debug */}
+    {chartError && (
+      <div style={{ background: "#330000", color: "red", padding: "10px" }}>
+        <strong>Erreur ApexCharts:</strong><br />
+        {chartError}
+      </div>
+    )}
+
     {/* Chart avec try/catch */}
     <div>
       {(() => {
+        try {
+          return (
+            <Chart
               type="scatter"
               height={400}
               series={[
@@ -583,10 +595,20 @@ setBestPerformance(
                 chart: { zoom: { enabled: true }, toolbar: { show: true } },
                 xaxis: { title: { text: "Drawdown (€)" } },
                 yaxis: { title: { text: "Gain (€)" } },
-              }}            
+              }}
+            />
+          );
+        } catch (err) {
+          console.error("ERREUR CHART:", err);
+          setChartError(err.message ?? String(err));
+          return <p style={{ color: "red" }}>Erreur dans le composant Chart.</p>;
+        }
+      })()}
     </div>
   </section>
 )}
+
+
 
 
 

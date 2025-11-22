@@ -528,6 +528,7 @@ setBestPerformance(
       series={[
         {
           name: "Toutes les stratégies",
+		  showInLegend: false,
           data: filteredPoints.map((p) => ({
             x: Math.round(p.Gain),       // Gain → axe horizontal
             y: p.Drawdown,               // Drawdown → axe vertical

@@ -11,6 +11,11 @@ function formatMoney(value) {
   }).format(value) + " €";
 }
 
+// Format : 12 500
+function formatNumber(n) {
+  return n.toLocaleString("fr-FR");
+}
+
 function formatPercentFromFraction(value) {
   if (value === null || value === undefined || isNaN(value)) return "–";
   return (value * 100).toFixed(2).replace(".", ",") + " %";
@@ -536,6 +541,19 @@ setBestPerformance(
 
     {/* === CHART === */}
 	<div className="no-touch-zoom">
+	const maxDD = filteredPoints.length > 0 
+  ? Math.max(...filteredPoints.map(p => p.Drawdown))
+  : 0;
+
+// Définition du pas
+let step = 1000;
+if (maxDD < 5000) step = 500;
+else if (maxDD < 12000) step = 1000;
+else step = 2000;
+
+// Valeur max arrondie à la hausse
+const roundedMax = Math.ceil(maxDD / step) * step;
+
     <Chart
       type="scatter"
       height={500}
@@ -597,12 +615,12 @@ setBestPerformance(
         colors: [], // indispensable pour activer fillColor par point
 
 		xaxis: {
-		  title: { text: "Gain (€)" },
-		  tickAmount: 6,
+		  title: { text: "Drawdown (€)" },
 		  min: 0,
-		  max: Math.ceil(Math.max(...filteredPoints.map(p => p.Gain)) / 1000) * 1000,
+		  max: roundedMax,
+		  tickAmount: Math.ceil(roundedMax / step),
 		  labels: {
-			formatter: (v) => Math.round(v)
+			formatter: (v) => formatNumber(v)
 		  }
 		},
 
@@ -610,7 +628,7 @@ setBestPerformance(
           title: { text: "Drawdown (€)" },
           tickAmount: 6,
           labels: {
-            formatter: (v) => Math.round(v),
+            formatter: (v) => formatNumber(v),
           }
         },
 
@@ -622,9 +640,9 @@ setBestPerformance(
             if (!p) return "<div style='padding:5px'>Aucune donnée</div>";
             return `
               <div style="padding:10px; font-size:14px">
-                <strong>${Math.round(p.Gain)} € de gain</strong><br/>
-                📉 Drawdown : <b>${Math.round(p.Drawdown)} €</b><br/>
-                🏦 Capital : <b>${p.Capital} €</b><br/>
+                <strong>${formatNumber(p.Gain)} € de gain</strong><br/>
+                📉 Drawdown : <b>${formatNumber(p.Drawdown)} €</b><br/>
+                🏦 Capital : <b>${formatNumber(p.Capital)} €</b><br/>
                 📈 Actif : <b>${p.Actif}</b><br/>
                 🎯 Risque/trade : <b>${(p.pRisque ?? 0).toFixed(2)} %</b><br/>
                 🔥 % capital ventes : <b>${Math.round((p.pCapitalVente ?? 0) * 100)} %</b>
@@ -721,8 +739,7 @@ repos = 0                 // Périodes de repos (0 = aucun)
 nbcontratsAchat = 0       // préciser le nb de contrats voulus pour chaque achat (zéro = calcul automatique)
 nbcontratsVente = 0       // préciser le nb de contrats voulus pour chaque vente (zéro = calcul automatique)
 SecurisationGain = 1      // 1= Securisation des gains actif 
-CalendrierON = 1          // Filtre jours fériés + FED/BCE
-			`}
+CalendrierON = 1          // Filtre jours fériés + FED/BCE`}
 			</pre>
 
 

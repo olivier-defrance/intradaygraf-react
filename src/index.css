@@ -190,11 +190,10 @@ body {
 }
 
 .card-title {
-  background: #e8eef7;
-  color: #1a3d7c;
-  padding: 10px 16px;
-  border-radius: 8px 8px 0 0;
-  margin: -20px -20px 20px -20px; /* fusionne avec card */
+  background: #f4f4f4;
+  padding: 8px 14px;
+  border-radius: 6px;
+  display: inline-block;
 }
 
 /* Fields */

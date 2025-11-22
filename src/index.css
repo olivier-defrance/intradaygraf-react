@@ -147,15 +147,21 @@ body {
 
 .card {
   border-radius: var(--radius-lg);
+  background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.15), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(30, 64, 175, 0.22), transparent 55%),
+    rgba(248, 250, 252, 0.98);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  padding: 18px 16px 20px;
+  backdrop-filter: blur(12px);
+}
+
+[data-theme="light"] .card {
   background: linear-gradient(
     135deg,
     rgba(255, 255, 255, 0.96),
     rgba(248, 250, 252, 0.98)
   );
-  border: 1px solid var(--border-subtle);
-  box-shadow: var(--shadow-soft);
-  padding: 18px 16px 20px;
-  backdrop-filter: blur(12px);
 }
 
 .card-title {

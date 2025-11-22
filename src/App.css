@@ -243,3 +243,8 @@ body.dark .stat {
   margin:0 0 6px;
   font-size:1.8rem;
 }
+
+/* Empêche le pinch zoom sur mobile uniquement sur la zone du graphique */
+.no-touch-zoom {
+  touch-action: pan-y !important; /* empêche zoom tactile mais conserve le scroll vertical */
+}

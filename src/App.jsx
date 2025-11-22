@@ -557,6 +557,7 @@ const darkModeSwitch = (
     </div>
 
     {/* === CHART === */}
+	<div className="no-touch-zoom">
     <Chart
       type="scatter"
       height={420}
@@ -648,7 +649,7 @@ const darkModeSwitch = (
         }
       }}
     />
-
+  </div>
   </section>
 )}
 

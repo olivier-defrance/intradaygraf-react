@@ -253,6 +253,22 @@ setBestPerformance(
     );
   };
 
+const darkModeSwitch = (
+  <button
+    className="theme-toggle"
+    onClick={toggleTheme}
+    style={{
+      padding: "8px 14px",
+      borderRadius: "8px",
+      fontSize: "18px",
+      cursor: "pointer"
+    }}
+  >
+    {darkMode ? "☀️ Clair" : "🌙 Sombre"}
+  </button>
+);
+
+
   return (
     <div className={`app-root ${darkMode ? "theme-dark" : "theme-light"}`}>
       <div className="app-gradient" />
@@ -503,7 +519,7 @@ setBestPerformance(
   <section className="card card-charts">
 
     <h2 className="card-title">📊 Performance vs Risque constaté sur la période du 01/01/2017 au 10/11/2025</h2>
-
+	<p className="context-text"> Ensemble des résultats présent dans la base de connaissance du simulateur pour un Capital {formatMoney(result.capital)}</p>
     {/* === FILTRES ACTIFS === */}
     <div className="filters-actifs" style={{ marginBottom: "1rem" }}>
       <label>

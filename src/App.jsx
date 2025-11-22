@@ -83,8 +83,13 @@ const toggleActif5 = () => {
 	});
 
 useEffect(() => {
-  window.scrollTo(0, 0);
+  if (result) {
+    document
+      .querySelector(".result-box")
+      ?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
 }, [result]);
+
 
 
 useEffect(() => {

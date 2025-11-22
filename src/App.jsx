@@ -611,6 +611,9 @@ setBestPerformance(
       toolbar: { show: true }
     },
 
+    // === Empêche ApexCharts d’écraser fillColor ===
+    colors: [],
+
     xaxis: {
       title: { text: "Drawdown (€)" },
       tickAmount: 6,
@@ -628,10 +631,7 @@ setBestPerformance(
       hover: { size: 9 }
     },
 
-    // === ApexCharts lit fillColor sur chaque point ===
-    fill: {
-      type: "solid"
-    },
+    fill: { type: "solid" },
 
     tooltip: {
       shared: false,

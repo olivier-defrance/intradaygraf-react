@@ -502,7 +502,6 @@ setBestPerformance(
 <input type="checkbox" checked={filterActif1} onChange={toggleActif1} />
 <span className="slider"></span>
 </div>
-<span>Allemagne 40 Cash (1€)</span>
     {/* Pastille ronde bleu clair */}
     <span
       style={{
@@ -512,6 +511,7 @@ setBestPerformance(
         backgroundColor: "#64b5f6" // couleur actif 1€
       }}
     ></span>
+	<span>Allemagne 40 Cash (1€)</span>
 </label>
 
 
@@ -520,7 +520,6 @@ setBestPerformance(
 <input type="checkbox" checked={filterActif5} onChange={toggleActif5} />
 <span className="slider"></span>
 </div>
-<span>Allemagne 40 Cash (5€)</span>
     {/* Pastille ronde bleu foncé */}
     <span
       style={{
@@ -530,6 +529,7 @@ setBestPerformance(
         backgroundColor: "#1565c0" // couleur actif 5€
       }}
     ></span>
+	<span>Allemagne 40 Cash (5€)</span>
 </label>
 </div>
 

@@ -137,11 +137,18 @@ function App() {
 	}));
 
 
-      if (!rows || rows.length === 0) {
-        setSimuError("Aucun résultat pour cette configuration.");
-        setResult(null);
-        return;
-      }
+if (!rows || rows.length === 0) {
+  setSimuError("Aucun résultat pour cette configuration.");
+
+  // VIDER les graphes
+  setAllPoints([]);
+  setBestSerenite(null);
+  setBestPerformance(null);
+
+  setResult(null);
+  return;
+}
+
 
       // Choix du "meilleur" résultat selon l'objectif
       let best = cleanedRows[0];

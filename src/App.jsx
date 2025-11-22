@@ -49,31 +49,27 @@ function App() {
   const [filterActif5, setFilterActif5] = useState(true);
   const [objectifUtilise, setObjectifUtilise] = useState(null);
 
-  const toggleActif1 = () => {
-  const newValue = !filterActif1;
-  const other = filterActif5;
+const toggleActif1 = () => {
+  const newState = !filterActif1;
 
-  // Appliquer le changement
-  setFilterActif1(newValue);
-
-  // Si les deux sont décochés → réactiver automatiquement l'autre
-  if (!newValue && !other) {
+  // Si on essaie de décocher la DERNIÈRE case cochée → empêcher et basculer automatiquement l’autre
+  if (!newState && !filterActif5) {
     setFilterActif5(true);
   }
+
+  setFilterActif1(newState);
 };
 
 const toggleActif5 = () => {
-  const newValue = !filterActif5;
-  const other = filterActif1;
+  const newState = !filterActif5;
 
-  // Appliquer le changement
-  setFilterActif5(newValue);
-
-  // Si les deux sont décochés → réactiver automatiquement l'autre
-  if (!newValue && !other) {
+  if (!newState && !filterActif1) {
     setFilterActif1(true);
   }
+
+  setFilterActif5(newState);
 };
+
   
   const [showToolbar, setShowToolbar] = useState(true);
 
@@ -499,8 +495,7 @@ setBestPerformance(
     </p>
 
     {/* === FILTRES ACTIFS === */}
-
-
+ 
 <div className="filters-actifs" style={{ marginBottom: "1rem" }}>
   
   {/* Actif 1€ */}
@@ -508,11 +503,7 @@ setBestPerformance(
     <input
       type="checkbox"
       checked={filterActif1}
-      onChange={() => {
-            // empêcher les deux cases d’être décochées
-            if (!filterActif1 && !filterActif5) return;
-            setFilterActif1(!filterActif1);
-          }}
+      onChange={toggleActif1}
     />
 
     {/* Pastille ronde bleu clair */}
@@ -540,11 +531,7 @@ setBestPerformance(
     <input
       type="checkbox"
       checked={filterActif5}
-      onChange={() => {
-            // empêcher les deux cases d’être décochées
-            if (!filterActif5 && !filterActif1) return;
-            setFilterActif5(!filterActif5);
-          }}
+      onChange={toggleActif5}
     />
 
     {/* Pastille ronde bleu foncé */}

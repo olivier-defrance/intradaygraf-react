@@ -531,18 +531,13 @@ setBestPerformance(
 					chart: {
 					  zoom: { enabled: true },
 					  toolbar: {
-						  download: true,  
+						  download: false,  
 						  selection: true,
 						  zoom: false,
 						  zoomin: true,
 						  zoomout: true,
 						  pan: true,
 						  reset: true
-						},
-						export: {
-						  csv: {
-							enabled: false   
-						  }
 						}
 					},
 

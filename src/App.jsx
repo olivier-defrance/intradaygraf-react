@@ -629,7 +629,7 @@ setBestPerformance(
           shared: false,
           intersect: true,
           custom: function({ seriesIndex, dataPointIndex, w }) {
-            const p = w.globals.series[seriesIndex][dataPointIndex].meta;
+            const p = w.config.series[seriesIndex].data[dataPointIndex].meta;
 
             if (!p) return "<div style='padding:5px'>Aucune donnée</div>";
 

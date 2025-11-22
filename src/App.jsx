@@ -39,6 +39,11 @@ function App() {
   const [loadingSimu, setLoadingSimu] = useState(false);
   const [simuError, setSimuError] = useState("");
   const [result, setResult] = useState(null);
+  // --- Pour afficher tous les points du nuage ---
+  const [allPoints, setAllPoints] = useState([]);
+  const [bestSerenite, setBestSerenite] = useState(null);
+  const [bestPerformance, setBestPerformance] = useState(null);
+
 
   const [darkMode, setDarkMode] = useState(false);
 
@@ -147,6 +152,21 @@ function App() {
           if (current > bestVal) best = r;
         });
       }
+	  
+	// --- Sauvegarder toutes les stratégies pour affichage ---
+	setAllPoints(rows);
+
+	setBestSerenite(
+	  rows.reduce((a, b) =>
+		(b.Sharpe ?? -Infinity) > (a.Sharpe ?? -Infinity) ? b : a
+	  )
+	);
+
+	setBestPerformance(
+	  rows.reduce((a, b) =>
+		(b.Gain ?? -Infinity) > (a.Gain ?? -Infinity) ? b : a
+	  )
+	);
 
       setResult({
         ...best,
@@ -521,7 +541,7 @@ function App() {
 			  </section>
 			)}
 
-{result && allPoints && (
+{result && allPoints.length > 0 && bestSerenite && bestPerformance && (
   <section className="card card-charts">
     <h2 className="card-title">📊 Performance vs Risque (toutes stratégies)</h2>
 
@@ -561,23 +581,19 @@ function App() {
           toolbar: { show: true }
         },
 
-        xaxis: {
-          title: { text: "Drawdown (€)" }
-        },
-        yaxis: {
-          title: { text: "Gain (€)" }
-        },
+        xaxis: { title: { text: "Drawdown (€)" } },
+        yaxis: { title: { text: "Gain (€)" } },
 
         markers: {
-          size: ({ seriesIndex }) => {
-            if (seriesIndex === 1) return 18; // Sérénité
-            if (seriesIndex === 2) return 18; // Performance
-            return 8; // autres
+          size: (opts) => {
+            if (opts.seriesIndex === 1) return 18;
+            if (opts.seriesIndex === 2) return 18;
+            return 8;
           },
-          colors: ({ seriesIndex }) => {
-            if (seriesIndex === 1) return "#00e676"; // vert
-            if (seriesIndex === 2) return "#ffd600"; // jaune 
-            return "#90caf9"; // bleu clair pour le nuage
+          colors: (opts) => {
+            if (opts.seriesIndex === 1) return "#00e676"; // Sérénité = vert
+            if (opts.seriesIndex === 2) return "#ffd600"; // Performance = jaune
+            return "#90caf9"; // Nuage = bleu clair
           }
         },
 

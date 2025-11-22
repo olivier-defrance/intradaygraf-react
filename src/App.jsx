@@ -496,8 +496,8 @@ setBestPerformance(
 						{
 						  name: "Toutes les stratégies",
 						  data: filteredPoints.map((p) => ({
-							x: p.Drawdown,
-							y: Math.round(p.Gain),
+							x: Math.round(p.Gain),
+							y: p.Drawdown,
 							meta: p,
 							fillColor: (() => {
 							  const actif = String(p.Actif || "").toLowerCase();
@@ -552,13 +552,13 @@ setBestPerformance(
 				  colors: [], // important pour que fillColor fonctionne
 
 				  xaxis: {
-					title: { text: "Drawdown (€)" },
+					title: { text: "Gain (€)" },
 					tickAmount: 6,
 					labels: { formatter: (v) => Math.round(v) },
 				  },
 
 				  yaxis: {
-					title: { text: "Gain (€)" },
+					title: { text: "Drawdown (€)" },
 					labels: { formatter: (v) => Math.round(v) },
 				  },
 

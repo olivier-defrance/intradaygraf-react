@@ -566,8 +566,8 @@ setBestPerformance(
 			)}
 
 {allPoints.length > 0 && (
-{/* === SECTION GRAPHIQUE === */}
-<section className="card card-charts">
+  <section className="card card-charts">
+    {/* === SECTION GRAPHIQUE === */}
   <h2 className="card-title">📊 Performance vs Risque</h2>
 
   {/* === FILTRES ACTIFS === */}

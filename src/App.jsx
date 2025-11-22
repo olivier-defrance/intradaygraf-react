@@ -234,7 +234,7 @@ setBestPerformance(
         <main className="app-main">
           {/* Bloc paramètres */}
           <section className="card card-params">
-            <h2 className="card-title">⚙️ Paramètres de simulation</h2>
+            <h2 className="card-title">⚙️ *Paramètres de simulation</h2>
 
             {/* Capital */}
             <div className="field">

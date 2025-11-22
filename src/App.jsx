@@ -406,7 +406,7 @@ setBestPerformance(
               <div className="results-grid">
                 {/* Section 1 : paramètres robot */}
                 <div className="results-section-label">
-                  🧩 Paramètres utilisés :
+                  🧩 Paramètres du backtest :
                 </div>
 
                 <div className="stat-card">

@@ -558,90 +558,56 @@ setBestPerformance(
 
 {allPoints.length > 0 && (
   <section className="card card-charts">
-    <h2 className="card-title">📊 Performance vs Risque (toutes stratégies)</h2>
+    <h2 className="card-title">📊 DEBUG Performance vs Risque</h2>
 
-    <Chart
-      type="scatter"
-      height={400}
-      series={[
-        {
-          name: "Toutes les stratégies",
-          data: allPoints.map((p) => [p.Drawdown, p.Gain])
-        },
-        bestSerenite && bestSerenite.Drawdown !== undefined && bestSerenite.Gain !== undefined
-          ? {
-              name: "🎯 Sérénité (Sharpe max)",
-              data: [
+    {/* Zone d'erreur debug */}
+    {chartError && (
+      <div style={{ background: "#330000", color: "red", padding: "10px" }}>
+        <strong>Erreur ApexCharts:</strong><br />
+        {chartError}
+      </div>
+    )}
+
+    {/* Chart avec try/catch */}
+    <div>
+      {(() => {
+        try {
+          console.log("DEBUG allPoints:", allPoints);
+          console.log("DEBUG bestSerenite:", bestSerenite);
+          console.log("DEBUG bestPerformance:", bestPerformance);
+
+          return (
+            <Chart
+              type="scatter"
+              height={400}
+              series={[
                 {
-                  x: bestSerenite.Drawdown,
-                  y: bestSerenite.Gain
-                }
-              ]
-            }
-          : null,
-        bestPerformance && bestPerformance.Drawdown !== undefined && bestPerformance.Gain !== undefined
-          ? {
-              name: "🔥 Performance (Gain max)",
-              data: [
-                {
-                  x: bestPerformance.Drawdown,
-                  y: bestPerformance.Gain
-                }
-              ]
-            }
-          : null
-      ].filter(Boolean)}
-      options={{
-        chart: {
-          zoom: { enabled: true },
-          toolbar: { show: true }
-        },
-
-        xaxis: {
-          title: { text: "Drawdown (€)" },
-          labels: {
-            formatter: (value) => Number(value)
-          }
-        },
-
-        yaxis: {
-          title: { text: "Gain (€)" },
-          labels: {
-            formatter: (value) => Number(value)
-          }
-        },
-
-        grid: {
-          borderColor: "#777",
-          strokeDashArray: 4
-        },
-
-        markers: {
-          size: (opts) => {
-            if (opts.seriesIndex === 1) return 18; // Sérénité
-            if (opts.seriesIndex === 2) return 18; // Performance
-            return 8; // Nuage
-          },
-          colors: (opts) => {
-            if (opts.seriesIndex === 1) return "#00e676"; // vert
-            if (opts.seriesIndex === 2) return "#ffd600"; // jaune
-            return "#90caf9"; // bleu clair
-          },
-          strokeWidth: 1,
-          strokeColors: "#222"
-        },
-
-        tooltip: {
-          theme: "dark",
-          x: {
-            formatter: (value) => `${value} €`
-          },
-          y: {
-            formatter: (value) => `${value} €`
-          }
+                  name: "Toutes les stratégies",
+                  data: allPoints.map((p) => [p.Drawdown, p.Gain]),
+                },
+                bestSerenite && {
+                  name: "🎯 Sérénité",
+                  data: [[bestSerenite.Drawdown, bestSerenite.Gain]],
+                },
+                bestPerformance && {
+                  name: "🔥 Performance",
+                  data: [[bestPerformance.Drawdown, bestPerformance.Gain]],
+                },
+              ].filter(Boolean)}
+              options={{
+                chart: { zoom: { enabled: true }, toolbar: { show: true } },
+                xaxis: { title: { text: "Drawdown (€)" } },
+                yaxis: { title: { text: "Gain (€)" } },
+              }}
+            />
+          );
+        } catch (err) {
+          console.error("ERREUR CHART:", err);
+          setChartError(err.message ?? String(err));
+          return <p style={{ color: "red" }}>Erreur dans le composant Chart.</p>;
         }
-      }}
-    />
+      })()}
+    </div>
   </section>
 )}
 

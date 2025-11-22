@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./index.css";
+import Chart from "react-apexcharts";
 
 const API_URL = "https://api.olivdef.fr";
 
@@ -518,6 +519,65 @@ CalendrierON = 1          // Filtre jours fériés + FED/BCE
 </pre>
   </section>
 )}
+
+{result && (
+  <section className="robot-code-block">
+    <h2 className="card-title">📊 Performance vs Risque</h2>
+
+    <Chart
+      type="scatter"
+      height={350}
+      series={[
+        {
+          name: "Optimisation",
+          data: [
+            {
+              x: result.Drawdown,        // Axe X
+              y: result.Gain,            // Axe Y
+              size: result.pRisque,      // Taille du point
+              color: result.Sharpe ?? 1  // Couleur basée sur Gain/DD
+            }
+          ]
+        }
+      ]}
+      options={{
+        chart: {
+          zoom: { enabled: false },
+          toolbar: { show: false }
+        },
+        xaxis: {
+          title: { text: "Drawdown (€)" },
+          labels: { formatter: (v) => Math.round(v) }
+        },
+        yaxis: {
+          title: { text: "Gain (€)" },
+          labels: { formatter: (v) => Math.round(v) }
+        },
+        markers: {
+          size: result.pRisque / 2, // réduit un peu la taille pour l’esthétique
+          colors: [
+            result.Sharpe > 2
+              ? "#00c853" // vert vif si très bon ratio
+              : result.Sharpe > 1
+              ? "#ffd600" // jaune si correct
+              : "#d50000" // rouge si faible
+          ]
+        },
+        tooltip: {
+          y: {
+            formatter: (val) =>
+              new Intl.NumberFormat("fr-FR").format(val) + " €"
+          },
+          x: {
+            formatter: (val) =>
+              new Intl.NumberFormat("fr-FR").format(val) + " €"
+          }
+        }
+      }}
+    />
+  </section>
+)}
+
 
         </main>
       </div>

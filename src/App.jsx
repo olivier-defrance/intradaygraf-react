@@ -427,7 +427,7 @@ const darkModeSwitch = (
           {/* Résultats */}
           {result && (
             <section className="card card-results">
-              <h2 className="card-title">📊 Paramétrage optimal constaté sur la période du 01/01/2017 au 10/11/2025</h2>
+              <h2 className="card-title">📊 Paramétrage optimal constaté en backtest (2017 → 10/11/2025)</h2>
               <p className="context-text">
                 Capital {formatMoney(result.capital)} • Drawdown max accepté{" "}
                 {formatMoney(result.ddMax)}
@@ -518,7 +518,7 @@ const darkModeSwitch = (
 {allPoints.length > 0 && (
   <section className="card card-charts">
 
-    <h2 className="card-title">📊 Performance vs Risque constaté sur la période du 01/01/2017 au 10/11/2025</h2>
+    <h2 className="card-title">📊 Performance vs Risque constaté en backtest (2017 → 10/11/2025)</h2>
 	<p className="context-text"> Ensemble des résultats présent dans la base de connaissance du simulateur pour un Capital {formatMoney(result.capital)}</p>
     {/* === FILTRES ACTIFS === */}
     <div className="filters-actifs" style={{ marginBottom: "1rem" }}>

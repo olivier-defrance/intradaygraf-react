@@ -239,6 +239,20 @@ setBestPerformance(
     }
   };
   
+  	const maxDD = filteredPoints.length > 0 
+  ? Math.max(...filteredPoints.map(p => p.Drawdown))
+  : 0;
+
+// Définition du pas
+let step = 1000;
+if (maxDD < 5000) step = 500;
+else if (maxDD < 12000) step = 1000;
+else step = 2000;
+
+// Valeur max arrondie à la hausse
+const roundedMax = Math.ceil(maxDD / step) * step;
+  
+  
   return (
     <div className="app-root">
       <div className="app-gradient" />
@@ -541,19 +555,6 @@ setBestPerformance(
 
     {/* === CHART === */}
 	<div className="no-touch-zoom">
-	const maxDD = filteredPoints.length > 0 
-  ? Math.max(...filteredPoints.map(p => p.Drawdown))
-  : 0;
-
-// Définition du pas
-let step = 1000;
-if (maxDD < 5000) step = 500;
-else if (maxDD < 12000) step = 1000;
-else step = 2000;
-
-// Valeur max arrondie à la hausse
-const roundedMax = Math.ceil(maxDD / step) * step;
-
     <Chart
       type="scatter"
       height={500}

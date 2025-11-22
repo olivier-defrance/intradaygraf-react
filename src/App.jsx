@@ -490,11 +490,11 @@ setBestPerformance(
 {allPoints.length > 0 && result && (
   <section className="card card-charts">
     <h2 className="card-title">
-      📊 Performance des backtests pour un capital alloué de {formatMoney(result.capital)} (2017 → 10/11/2025)
+      📊 Résultats des backtests (2017 → 10/11/2025)
     </h2>
 
     <p className="context-text">
-      Chaque point du graphique représente le résultat d'un backtest utilisant une combinaison spécifique de paramètres pour un capital alloué de {formatMoney(result.capital)}.
+      Chaque point du graphique représente le résultat d'un backtest utilisant une combinaison spécifique de paramètres <strong>pour un capital alloué de {formatMoney(result.capital)}</strong>.
       Sélectionnez un point sur le graphique pour consulter la combinaison de paramètres associée.
     </p>
 

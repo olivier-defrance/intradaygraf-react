@@ -561,7 +561,7 @@ body {
   margin-top: 8px;
   align-items: center;
   font-size: 0.9rem;
-  left: 50%;
+  justify-content: center;
 }
 
 .legend-item {

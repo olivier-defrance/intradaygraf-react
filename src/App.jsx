@@ -543,7 +543,7 @@ function App() {
 
 {result && allPoints.length > 0 && bestSerenite && bestPerformance && (
   <section className="card card-charts">
-    <h2 className="card-title">📊 Performance vs Risque (toutes stratégies)</h2>
+    <h2 className="card-title">📊 *Performance vs Risque (toutes stratégies)</h2>
 
     <Chart
       type="scatter"

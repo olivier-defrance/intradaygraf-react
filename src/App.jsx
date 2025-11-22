@@ -295,6 +295,11 @@ const darkModeSwitch = (
   </div>
 </header>
 
+          {/* Phrase de vigilance */}
+			<p className="warning-banner">
+			  ⚠️ Les performances passées ne préjugent pas des performances futures.
+			</p>
+			
         <main className="app-main">
           {/* Bloc paramètres */}
           <section className="card card-params">
@@ -418,11 +423,6 @@ const darkModeSwitch = (
               {simuError && <div className="field-error">{simuError}</div>}
             </div>
           </section>
-
-          {/* Phrase de vigilance */}
-			<p className="warning-banner">
-			  ⚠️ Les performances passées ne préjugent pas des performances futures.
-			</p>
 
           {/* Résultats */}
           {result && (

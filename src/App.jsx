@@ -515,28 +515,44 @@ const darkModeSwitch = (
             </section>
           )}
 		  
+
+{/* === SECTION GRAPHIQUE === */}
 {allPoints.length > 0 && (
   <section className="card card-charts">
 
-    <h2 className="card-title">📊 Performance vs Risque constaté en backtest (2017 → 10/11/2025)</h2>
-	<p className="context-text"> Ensemble des résultats présent dans la base de connaissance du simulateur pour un Capital {formatMoney(result.capital)}</p>
+    <h2 className="card-title">
+      📊 Performance vs Risque constaté en backtest (2017 → 10/11/2025)
+    </h2>
+
+    <p className="context-text">
+      Chaque point représente une combinaison différentes de paramètres utilisée par le robot avec un capital de {formatMoney(result.capital)}.
+    </p>
+
     {/* === FILTRES ACTIFS === */}
     <div className="filters-actifs" style={{ marginBottom: "1rem" }}>
       <label>
         <input
-		  type="checkbox"
-		  checked={filterActif1}
-		  onChange={toggleActif1}
-		/>
+          type="checkbox"
+          checked={filterActif1}
+          onChange={() => {
+            // empêcher les deux cases d’être décochées
+            if (!filterActif1 && !filterActif5) return;
+            setFilterActif1(!filterActif1);
+          }}
+        />
         {" "}Allemagne 40 Cash (1€)
       </label>
 
       <label style={{ marginLeft: "1rem" }}>
-		<input
-		  type="checkbox"
-		  checked={filterActif5}
-		  onChange={toggleActif5}
-		/>
+        <input
+          type="checkbox"
+          checked={filterActif5}
+          onChange={() => {
+            // empêcher les deux cases d’être décochées
+            if (!filterActif5 && !filterActif1) return;
+            setFilterActif5(!filterActif5);
+          }}
+        />
         {" "}Allemagne 40 Cash (5€)
       </label>
     </div>
@@ -546,134 +562,97 @@ const darkModeSwitch = (
       type="scatter"
       height={420}
       series={[
-        /* --- Série principale : tous les points --- */
         {
           name: "Toutes les stratégies",
           data: filteredPoints.map((p) => ({
-            x: Math.round(p.Gain),
-            y: p.Drawdown,
+            x: Math.round(p.Gain),       // Gain → axe horizontal
+            y: p.Drawdown,               // Drawdown → axe vertical
             meta: p,
             fillColor: (() => {
               const actif = String(p.Actif || "").toLowerCase();
-              if (actif.includes("1€")) return "#64b5f6";   // bleu clair
-              if (actif.includes("5€")) return "#1565c0";   // bleu foncé
+              if (actif.includes("1€")) return "#64b5f6";  // bleu clair
+              if (actif.includes("5€")) return "#1565c0";  // bleu foncé
               return "#90caf9";
             })()
-          }))
+          })),
         },
 
-        /* --- Point Sérénité — Highlight --- */
         bestSerenite && {
           name: "🧘 Sérénité",
           data: [{
             x: Math.round(bestSerenite.Gain),
             y: bestSerenite.Drawdown,
-            meta: bestSerenite
+            meta: bestSerenite,
+            fillColor: "#00e676",
+            marker: { size: 16, strokeWidth: 2, strokeColor: "#00c853" }
           }],
-          marker: {
-            size: 22,
-            strokeWidth: 4,
-            strokeColor: "#00c853",    // halo vert
-            fillColor: "#00e676"       // point vert vif
-          }
         },
 
-        /* --- Point Performance — Highlight --- */
         bestPerformance && {
           name: "⚡ Performance",
           data: [{
             x: Math.round(bestPerformance.Gain),
             y: bestPerformance.Drawdown,
-            meta: bestPerformance
+            meta: bestPerformance,
+            fillColor: "#ffab00",
+            marker: { size: 16, strokeWidth: 2, strokeColor: "#ff6f00" }
           }],
-          marker: {
-            size: 22,
-            strokeWidth: 4,
-            strokeColor: "#ff6f00",    // halo orange
-            fillColor: "#ffab00"       // point orange vif
-          }
         }
       ].filter(Boolean)}
 
       options={{
         chart: {
           zoom: { enabled: true },
-          toolbar: showToolbar ? {
-				download: false,
-				selection: true,
-				zoom: false,
-				zoomin: true,
-				zoomout: true,
-				pan: true,
-				reset: true
-			} : {
-				show: false
-			}
-        },
-
-        colors: [],
-
-        /* === AXE X = Gain === */
-        xaxis: {
-          title: { text: "Gain (€)" },
-          tickAmount: 6,
-          min: 0,
-          max:
-            Math.ceil(
-              Math.max(...filteredPoints.map((p) => p.Gain)) / 1000
-            ) * 1000,
-          labels: {
-            formatter: (v) => Math.round(v)
+          toolbar: {
+            show: true,
+            tools: {
+              download: false,  // 🔥 désactive le download CSV
+            }
           }
         },
 
-        /* === AXE Y = Drawdown === */
+        colors: [], // indispensable pour activer fillColor par point
+
+        xaxis: {
+          title: { text: "Gain (€)" },
+          tickAmount: 6,
+          labels: {
+            formatter: (v) => Math.round(v),
+          }
+        },
+
         yaxis: {
           title: { text: "Drawdown (€)" },
           tickAmount: 6,
           labels: {
-            formatter: (v) => Math.round(v)
+            formatter: (v) => Math.round(v),
           }
         },
 
-        /* === Infobulle enrichie === */
         tooltip: {
           shared: false,
           intersect: true,
-          custom: function ({ seriesIndex, dataPointIndex, w }) {
-            const p =
-              w.config.series[seriesIndex].data[dataPointIndex].meta;
-            if (!p)
-              return "<div style='padding:5px'>Aucune donnée</div>";
-
+          custom: function({ seriesIndex, dataPointIndex, w }) {
+            const p = w.config.series[seriesIndex].data[dataPointIndex].meta;
+            if (!p) return "<div style='padding:5px'>Aucune donnée</div>";
             return `
               <div style="padding:10px; font-size:14px">
                 <strong>${Math.round(p.Gain)} € de gain</strong><br/>
                 📉 Drawdown : <b>${Math.round(p.Drawdown)} €</b><br/>
                 🏦 Capital : <b>${p.Capital} €</b><br/>
                 📈 Actif : <b>${p.Actif}</b><br/>
-                🎯 Risque/trade : <b>${p.pRisque.toFixed(2)} %</b><br/>
-                🔥 % capital ventes : <b>${Math.round(
-                  p.pCapitalVente * 100
-                )} %</b>
-              </div>`;
+                🎯 Risque/trade : <b>${(p.pRisque ?? 0).toFixed(2)} %</b><br/>
+                🔥 % capital ventes : <b>${Math.round((p.pCapitalVente ?? 0) * 100)} %</b>
+              </div>
+            `;
           }
-        },
-
-        markers: {
-          size: 7,
-          strokeWidth: 1,
-          hover: { size: 9 }
-        },
-
-        legend: {
-          position: "top",
-          markers: { width: 14, height: 14 }
         }
       }}
     />
+
   </section>
 )}
+
 		  
 		  
 		  {/* Bloc code robot */}

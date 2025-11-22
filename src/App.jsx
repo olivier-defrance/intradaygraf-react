@@ -237,7 +237,7 @@ setBestPerformance(
   };
 
   return (
-    <div className="app-root theme-light">
+    <div className="app-root">
       <div className="app-gradient" />
       <div className="app-shell">
 <header className="header-hero">
@@ -488,9 +488,7 @@ setBestPerformance(
 
     <p className="context-text">
       Chaque point du graphique représente le résultat d'un backtest utilisant une combinaison différente de paramètres pour un capital alloué de {formatMoney(result.capital)}.
-    </p>
-	<p className="context-text">
-      Sélectionner un point du graphique pour voir la combinaison appliquée.
+      Sélectionnez un point du graphique pour voir la combinaison de paramètres associée.
     </p>
 
     {/* === FILTRES ACTIFS === */}

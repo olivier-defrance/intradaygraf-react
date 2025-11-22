@@ -129,6 +129,13 @@ function App() {
       }
 
       const rows = await response.json();
+	  // --- Correction : conversion en nombres pour ApexCharts ---
+	const cleanedRows = rows.map((r) => ({
+	  ...r,
+	  Drawdown: Number(r.Drawdown),
+	  Gain: Number(r.Gain),
+	}));
+
 
       if (!rows || rows.length === 0) {
         setSimuError("Aucun résultat pour cette configuration.");
@@ -137,36 +144,37 @@ function App() {
       }
 
       // Choix du "meilleur" résultat selon l'objectif
-      let best = rows[0];
+      let best = cleanedRows[0];
 
-      if (objectif === "serenite") {
-        rows.forEach((r) => {
-          const current = r.Sharpe ?? -Infinity;
-          const bestVal = best.Sharpe ?? -Infinity;
-          if (current > bestVal) best = r;
-        });
-      } else {
-        rows.forEach((r) => {
-          const current = r.Gain ?? -Infinity;
-          const bestVal = best.Gain ?? -Infinity;
-          if (current > bestVal) best = r;
-        });
-      }
-	  
-	// --- Sauvegarder toutes les stratégies pour affichage ---
-	setAllPoints(rows);
+if (objectif === "serenite") {
+  cleanedRows.forEach((r) => {
+    const current = r.Sharpe ?? -Infinity;
+    const bestVal = best.Sharpe ?? -Infinity;
+    if (current > bestVal) best = r;
+  });
+} else {
+  cleanedRows.forEach((r) => {
+    const current = r.Gain ?? -Infinity;
+    const bestVal = best.Gain ?? -Infinity;
+    if (current > bestVal) best = r;
+  });
+}
 
-	setBestSerenite(
-	  rows.reduce((a, b) =>
-		(b.Sharpe ?? -Infinity) > (a.Sharpe ?? -Infinity) ? b : a
-	  )
-	);
+// --- Nuage de points ---
+setAllPoints(cleanedRows);
 
-	setBestPerformance(
-	  rows.reduce((a, b) =>
-		(b.Gain ?? -Infinity) > (a.Gain ?? -Infinity) ? b : a
-	  )
-	);
+setBestSerenite(
+  cleanedRows.reduce((a, b) =>
+    (b.Sharpe ?? -Infinity) > (a.Sharpe ?? -Infinity) ? b : a
+  )
+);
+
+setBestPerformance(
+  cleanedRows.reduce((a, b) =>
+    (b.Gain ?? -Infinity) > (a.Gain ?? -Infinity) ? b : a
+  )
+);
+
 
       setResult({
         ...best,

@@ -487,7 +487,7 @@ setBestPerformance(
     </h2>
 
     <p className="context-text">
-      Chaque point du graphique représente le résultat d'un backtest utilisant une combinaison différente de paramètres pour un capital alloué de {formatMoney(result.capital)}.
+      Chaque point du graphique représente le résultat d'un backtest utilisant une combinaison spécifique de paramètres pour un capital alloué de {formatMoney(result.capital)}.
       Sélectionnez un point sur le graphique pour voir la combinaison de paramètres associée.
     </p>
 

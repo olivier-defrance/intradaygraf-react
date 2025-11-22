@@ -27,19 +27,33 @@ function formatPercentNoDecFromFraction(value) {
 }
 
 function toggleActif1() {
-  if (filterActif1 && !filterActif5) {
-    // Si on essaie de décocher le dernier actif → on réactive l’autre
-    setFilterActif5(true);
+  if (!filterActif1 && !filterActif5) {
+    // Cas impossible (les deux OFF) → on force ON
+    setFilterActif1(true);
+    return;
   }
+
+  if (filterActif1 && !filterActif5) {
+    // On veut décocher le dernier actif → impossible
+    return;
+  }
+
   setFilterActif1(!filterActif1);
 }
 
 function toggleActif5() {
-  if (filterActif5 && !filterActif1) {
-    setFilterActif1(true);
+  if (!filterActif1 && !filterActif5) {
+    setFilterActif5(true);
+    return;
   }
+
+  if (filterActif5 && !filterActif1) {
+    return;
+  }
+
   setFilterActif5(!filterActif5);
 }
+
 
 function App() {
   const [capitals, setCapitals] = useState([]);
@@ -478,17 +492,25 @@ setBestPerformance(
 {allPoints.length > 0 && (
   <section className="card card-charts">
 
-    <h2 className="card-title">📊 Performance vs Risque</h2>
+    <h2 className="card-title">📊 Performance vs Risque constaté sur la période historique du 01/01/2017 au 10/11/2025</h2>
 
     {/* === FILTRES ACTIFS === */}
     <div className="filters-actifs" style={{ marginBottom: "1rem" }}>
       <label>
-        <input type="checkbox" checked={filterActif1} onChange={toggleActif1} />
+        <input
+		  type="checkbox"
+		  checked={filterActif1}
+		  onChange={toggleActif1}
+		/>
         {" "}Allemagne 40 Cash (1€)
       </label>
 
       <label style={{ marginLeft: "1rem" }}>
-        <input type="checkbox" checked={filterActif5} onChange={toggleActif5} />
+		<input
+		  type="checkbox"
+		  checked={filterActif5}
+		  onChange={toggleActif5}
+		/>
         {" "}Allemagne 40 Cash (5€)
       </label>
     </div>

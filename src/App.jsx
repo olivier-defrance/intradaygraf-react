@@ -541,11 +541,11 @@ setBestPerformance(
 						show: true,
 						tools: {
 						  download: false,
-						  selection: true,
-						  zoom: false,
+						  selection: false,
+						  zoom: true,
 						  zoomin: true,
 						  zoomout: true,
-						  pan: true,
+						  pan: false,
 						  reset: true,
 						},
 					  },
@@ -554,24 +554,24 @@ setBestPerformance(
 					colors: [], // IMPORTANT : permet à fillColor de fonctionner
 
 					xaxis: {
-					  title: { text: "Gain (€)" },
-					  tickAmount: 8,
-					  labels: {
-						formatter: (value) => Math.round(value),
-					  },
-					  // ⬇️ FORCE les ticks à être des multiples de 500
-					  tickPlacement: "on",
-					  tickAmount: undefined,
-					  min: (function () {
-						const minGain = Math.min(...filteredPoints.map(p => Math.round(p.Gain)));
-						return Math.floor(minGain / 500) * 500;
-					  })(),
-					  max: (function () {
-						const maxGain = Math.max(...filteredPoints.map(p => Math.round(p.Gain)));
-						return Math.ceil(maxGain / 500) * 500;
-					  })(),
-					  stepSize: 500   // ← MAGIQUE : 1 tick = 500 €
-					},
+				  title: { text: "Gain (€)" },
+				  tickAmount: 8,
+				  labels: {
+					formatter: (value) => Math.round(value),
+				  },
+				  // ⬇️ FORCE les ticks à être des multiples de 1000
+				  tickPlacement: "on",
+				  tickAmount: undefined,
+				  min: (function () {
+					const minGain = Math.min(...filteredPoints.map(p => Math.round(p.Gain)));
+					return Math.floor(minGain / 1000) * 1000;
+				  })(),
+				  max: (function () {
+					const maxGain = Math.max(...filteredPoints.map(p => Math.round(p.Gain)));
+					return Math.ceil(maxGain / 1000) * 1000;
+				  })(),
+				  stepSize: 1000   // ← MAGIQUE : 1 tick = 1000 €
+				},
 
 					yaxis: {
 					  title: { text: "Drawdown (€)" }, // Axe Y inversé

@@ -47,6 +47,16 @@ function App() {
   // Filtres actifs
   const [filterActif1, setFilterActif1] = useState(true);
   const [filterActif5, setFilterActif5] = useState(true);
+  const toggleActif1 = () => {
+  if (filterActif1 && !filterActif5) return; // empêcher tout décochage
+  setFilterActif1(!filterActif1);
+};
+
+const toggleActif5 = () => {
+  if (filterActif5 && !filterActif1) return; // empêcher tout décochage
+  setFilterActif5(!filterActif5);
+};
+  
   const [showToolbar, setShowToolbar] = useState(true);
 
 	const filteredPoints = allPoints.filter((p) => {
@@ -109,35 +119,6 @@ useEffect(() => {
   useEffect(() => {
     setDdSlider(ddMax);
   }, [ddMax]);
-
-function toggleActif1() {
-  if (!filterActif1 && !filterActif5) {
-    // Cas impossible (les deux OFF) → on force ON
-    setFilterActif1(true);
-    return;
-  }
-
-  if (filterActif1 && !filterActif5) {
-    // On veut décocher le dernier actif → impossible
-    return;
-  }
-
-  setFilterActif1(!filterActif1);
-}
-
-function toggleActif5() {
-  if (!filterActif1 && !filterActif5) {
-    setFilterActif5(true);
-    return;
-  }
-
-  if (filterActif5 && !filterActif1) {
-    return;
-  }
-
-  setFilterActif5(!filterActif5);
-}
-
 
   const handleDdSliderChange = (e) => {
     const value = Number(e.target.value);

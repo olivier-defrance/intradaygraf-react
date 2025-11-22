@@ -460,6 +460,134 @@ setBestPerformance(
             </section>
           )}
 		  
+		  {allPoints.length > 0 && (
+			  <section className="card card-charts">
+				{/* === SECTION GRAPHIQUE === */}
+			  <h2 className="card-title">📊 Performance vs Risque</h2>
+
+			  {/* === FILTRES ACTIFS === */}
+			  <div className="filters-actifs" style={{ marginBottom: "1rem" }}>
+				<label>
+				  <input
+					type="checkbox"
+					checked={filterActif1}
+					onChange={() => setFilterActif1(!filterActif1)}
+				  />{" "}
+				  Allemagne 40 Cash (1€)
+				</label>
+
+				<label style={{ marginLeft: "1rem" }}>
+				  <input
+					type="checkbox"
+					checked={filterActif5}
+					onChange={() => setFilterActif5(!filterActif5)}
+				  />{" "}
+				  Allemagne 40 Cash (5€)
+				</label>
+			  </div>
+
+			  {/* === CHART === */}
+			  <Chart
+				type="scatter"
+				height={400}
+				series={
+				  filteredPoints.length > 0
+					? [
+						{
+						  name: "Toutes les stratégies",
+						  data: filteredPoints.map((p) => ({
+							x: p.Drawdown,
+							y: Math.round(p.Gain),
+							meta: p,
+							fillColor: (() => {
+							  const actif = String(p.Actif || "").toLowerCase();
+							  if (actif.includes("1€")) return "#64b5f6"; // bleu clair
+							  if (actif.includes("5€")) return "#1565c0"; // bleu foncé
+							  return "#90caf9";
+							})(),
+						  })),
+						},
+						bestSerenite && {
+						  name: "🧘 Sérénité",
+						  data: [
+							{
+							  x: bestSerenite.Drawdown,
+							  y: Math.round(bestSerenite.Gain),
+							  meta: bestSerenite,
+							  fillColor: "#00e676",
+							  marker: { size: 16, strokeWidth: 2, strokeColor: "#00c853" },
+							},
+						  ],
+						},
+						bestPerformance && {
+						  name: "⚡ Performance",
+						  data: [
+							{
+							  x: bestPerformance.Drawdown,
+							  y: Math.round(bestPerformance.Gain),
+							  meta: bestPerformance,
+							  fillColor: "#ffab00",
+							  marker: { size: 16, strokeWidth: 2, strokeColor: "#ff6f00" },
+							},
+						  ],
+						},
+					  ].filter(Boolean)
+					: []
+				}
+				options={{
+				  chart: {
+					zoom: { enabled: true },
+					toolbar: { show: true,
+					  tools: {
+						download: false,
+						selection: true,
+						zoom: false,
+						zoomin: true,
+						zoomout: true,
+						pan: false,
+						reset: true
+					  } },
+				  },
+
+				  colors: [], // important pour que fillColor fonctionne
+
+				  xaxis: {
+					title: { text: "Drawdown (€)" },
+					tickAmount: 6,
+					labels: { formatter: (v) => Math.round(v) },
+				  },
+
+				  yaxis: {
+					title: { text: "Gain (€)" },
+					labels: { formatter: (v) => Math.round(v) },
+				  },
+
+				  tooltip: {
+					shared: false,
+					intersect: true,
+					custom: function ({ seriesIndex, dataPointIndex, w }) {
+					  const p = w.config.series[seriesIndex].data[dataPointIndex].meta;
+					  if (!p) return "<div style='padding:5px'>Aucune donnée</div>";
+
+					  return `
+						<div style="padding:10px; font-size:14px">
+						  <strong>${Math.round(p.Gain)} € de gain</strong><br/>
+						  📉 Drawdown : <b>${Math.round(p.Drawdown)} €</b><br/>
+						  🏦 Capital : <b>${p.Capital} €</b><br/>
+						  📈 Actif : <b>${p.Actif}</b><br/>
+						  🎯 Risque/trade : <b>${p.pRisque.toFixed(2)} %</b><br/>
+						  🔥 % capital ventes : <b>${Math.round(p.pCapitalVente * 100)} %</b>
+						</div>
+					  `;
+					},
+				  },
+				}}
+			  />
+			</section>
+
+			)}
+		  
+		  
 		  {/* Bloc code robot */}
 			{result && (
 			  <section className="card card-results">
@@ -564,138 +692,6 @@ setBestPerformance(
 			</pre>
 			  </section>
 			)}
-
-{allPoints.length > 0 && (
-  <section className="card card-charts">
-    {/* === SECTION GRAPHIQUE === */}
-  <h2 className="card-title">📊 Performance vs Risque</h2>
-
-  {/* === FILTRES ACTIFS === */}
-  <div className="filters-actifs" style={{ marginBottom: "1rem" }}>
-    <label>
-      <input
-        type="checkbox"
-        checked={filterActif1}
-        onChange={() => setFilterActif1(!filterActif1)}
-      />{" "}
-      Allemagne 40 Cash (1€)
-    </label>
-
-    <label style={{ marginLeft: "1rem" }}>
-      <input
-        type="checkbox"
-        checked={filterActif5}
-        onChange={() => setFilterActif5(!filterActif5)}
-      />{" "}
-      Allemagne 40 Cash (5€)
-    </label>
-  </div>
-
-  {/* === CHART === */}
-  <Chart
-    type="scatter"
-    height={400}
-    series={
-      filteredPoints.length > 0
-        ? [
-            {
-              name: "Toutes les stratégies",
-              data: filteredPoints.map((p) => ({
-                x: p.Drawdown,
-                y: Math.round(p.Gain),
-                meta: p,
-                fillColor: (() => {
-                  const actif = String(p.Actif || "").toLowerCase();
-                  if (actif.includes("1€")) return "#64b5f6"; // bleu clair
-                  if (actif.includes("5€")) return "#1565c0"; // bleu foncé
-                  return "#90caf9";
-                })(),
-              })),
-            },
-            bestSerenite && {
-              name: "🧘 Sérénité",
-              data: [
-                {
-                  x: bestSerenite.Drawdown,
-                  y: Math.round(bestSerenite.Gain),
-                  meta: bestSerenite,
-                  fillColor: "#00e676",
-                  marker: { size: 16, strokeWidth: 2, strokeColor: "#00c853" },
-                },
-              ],
-            },
-            bestPerformance && {
-              name: "⚡ Performance",
-              data: [
-                {
-                  x: bestPerformance.Drawdown,
-                  y: Math.round(bestPerformance.Gain),
-                  meta: bestPerformance,
-                  fillColor: "#ffab00",
-                  marker: { size: 16, strokeWidth: 2, strokeColor: "#ff6f00" },
-                },
-              ],
-            },
-          ].filter(Boolean)
-        : []
-    }
-    options={{
-      chart: {
-        zoom: { enabled: true },
-        toolbar: { show: true,
-		  tools: {
-			download: true,
-			selection: false,
-			zoom: false,
-			zoomin: true,
-			zoomout: true,
-			pan: false,
-			reset: true
-		  } },
-      },
-
-      colors: [], // important pour que fillColor fonctionne
-
-      xaxis: {
-        title: { text: "Drawdown (€)" },
-        tickAmount: 6,
-        labels: { formatter: (v) => Math.round(v) },
-      },
-
-      yaxis: {
-        title: { text: "Gain (€)" },
-        labels: { formatter: (v) => Math.round(v) },
-      },
-
-      tooltip: {
-        shared: false,
-        intersect: true,
-        custom: function ({ seriesIndex, dataPointIndex, w }) {
-          const p = w.config.series[seriesIndex].data[dataPointIndex].meta;
-          if (!p) return "<div style='padding:5px'>Aucune donnée</div>";
-
-          return `
-            <div style="padding:10px; font-size:14px">
-              <strong>${Math.round(p.Gain)} € de gain</strong><br/>
-              📉 Drawdown : <b>${Math.round(p.Drawdown)} €</b><br/>
-              🏦 Capital : <b>${p.Capital} €</b><br/>
-              📈 Actif : <b>${p.Actif}</b><br/>
-              🎯 Risque/trade : <b>${p.pRisque.toFixed(2)} %</b><br/>
-              🔥 % capital ventes : <b>${Math.round(p.pCapitalVente * 100)} %</b>
-            </div>
-          `;
-        },
-      },
-    }}
-  />
-</section>
-
-)}
-
-
-
-
-
 
 
         </main>

@@ -26,35 +26,6 @@ function formatPercentNoDecFromFraction(value) {
   return Math.round(value * 100) + " %";
 }
 
-function toggleActif1() {
-  if (!filterActif1 && !filterActif5) {
-    // Cas impossible (les deux OFF) → on force ON
-    setFilterActif1(true);
-    return;
-  }
-
-  if (filterActif1 && !filterActif5) {
-    // On veut décocher le dernier actif → impossible
-    return;
-  }
-
-  setFilterActif1(!filterActif1);
-}
-
-function toggleActif5() {
-  if (!filterActif1 && !filterActif5) {
-    setFilterActif5(true);
-    return;
-  }
-
-  if (filterActif5 && !filterActif1) {
-    return;
-  }
-
-  setFilterActif5(!filterActif5);
-}
-
-
 function App() {
   const [capitals, setCapitals] = useState([]);
   const [capital, setCapital] = useState("5000");
@@ -138,6 +109,35 @@ useEffect(() => {
   useEffect(() => {
     setDdSlider(ddMax);
   }, [ddMax]);
+
+function toggleActif1() {
+  if (!filterActif1 && !filterActif5) {
+    // Cas impossible (les deux OFF) → on force ON
+    setFilterActif1(true);
+    return;
+  }
+
+  if (filterActif1 && !filterActif5) {
+    // On veut décocher le dernier actif → impossible
+    return;
+  }
+
+  setFilterActif1(!filterActif1);
+}
+
+function toggleActif5() {
+  if (!filterActif1 && !filterActif5) {
+    setFilterActif5(true);
+    return;
+  }
+
+  if (filterActif5 && !filterActif1) {
+    return;
+  }
+
+  setFilterActif5(!filterActif5);
+}
+
 
   const handleDdSliderChange = (e) => {
     const value = Number(e.target.value);

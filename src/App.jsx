@@ -566,6 +566,7 @@ setBestPerformance(
 
       options={{
         chart: {
+		  background: "#ffffff",
           zoom: { enabled: true },
           toolbar: {
             show: true,

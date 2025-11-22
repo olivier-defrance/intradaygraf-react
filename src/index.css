@@ -190,10 +190,10 @@ body {
 }
 
 .card-title {
+  padding: 6px 12px;
+  border-left: 6px solid #3f51b5;
   background: #f4f4f4;
-  padding: 8px 14px;
-  border-radius: 6px;
-  display: inline-block;
+  border-radius: 4px;
 }
 
 /* Fields */

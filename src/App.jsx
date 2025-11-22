@@ -489,102 +489,78 @@ setBestPerformance(
 			  {/* === CHART === */}
 				<Chart
 				  type="scatter"
-				  height={400}
-				  series={
-					filteredPoints.length > 0
-					  ? [
-						  {
-							name: "Toutes les stratégies",
-							data: filteredPoints.map((p) => ({
-							  x: Math.round(p.Gain),   // Gain → AXE X
-							  y: p.Drawdown,           // Drawdown → AXE Y
-							  meta: p,
-							  fillColor: (() => {
-								const actif = String(p.Actif || "").toLowerCase();
-								if (actif.includes("1€")) return "#64b5f6"; // bleu clair
-								if (actif.includes("5€")) return "#1565c0"; // bleu foncé
-								return "#90caf9";
-							  })(),
-							})),
-						  },
-						  bestSerenite && {
-							name: "🧘 Sérénité",
-							data: [
-							  {
-								x: Math.round(bestSerenite.Gain),
-								y: bestSerenite.Drawdown,
-								meta: bestSerenite,
-								fillColor: "#00e676",
-								marker: { size: 16, strokeWidth: 2, strokeColor: "#00c853" },
-							  },
-							],
-						  },
-						  bestPerformance && {
-							name: "⚡ Performance",
-							data: [
-							  {
-								x: Math.round(bestPerformance.Gain),
-								y: bestPerformance.Drawdown,
-								meta: bestPerformance,
-								fillColor: "#ffab00",
-								marker: { size: 16, strokeWidth: 2, strokeColor: "#ff6f00" },
-							  },
-							],
-						  },
-						].filter(Boolean)
-					  : []
-				  }
+				  height={420}
+				  series={[
+					{
+					  name: "Toutes les stratégies",
+					  data: filteredPoints.map((p) => ({
+						x: Math.round(p.Gain),      // Gain → axe X
+						y: p.Drawdown,              // Drawdown → axe Y
+						meta: p,
+						fillColor: (() => {
+						  const actif = String(p.Actif || "").toLowerCase();
+						  if (actif.includes("1€")) return "#64b5f6";   // bleu clair
+						  if (actif.includes("5€")) return "#1565c0";   // bleu foncé
+						  return "#90caf9";
+						})()
+					  }))
+					},
+					bestSerenite && {
+					  name: "🧘 Sérénité",
+					  data: [{
+						x: Math.round(bestSerenite.Gain),
+						y: bestSerenite.Drawdown,
+						meta: bestSerenite,
+						fillColor: "#00e676",
+						marker: { size: 16, strokeWidth: 2, strokeColor: "#00c853" }
+					  }]
+					},
+					bestPerformance && {
+					  name: "⚡ Performance",
+					  data: [{
+						x: Math.round(bestPerformance.Gain),
+						y: bestPerformance.Drawdown,
+						meta: bestPerformance,
+						fillColor: "#ffab00",
+						marker: { size: 16, strokeWidth: 2, strokeColor: "#ff6f00" }
+					  }]
+					}
+				  ].filter(Boolean)}
+
 				  options={{
 					chart: {
 					  zoom: { enabled: true },
-					  toolbar: {
-						show: true,
-						tools: {
-						  download: false,
-						  selection: false,
-						  zoom: true,
-						  zoomin: true,
-						  zoomout: true,
-						  pan: false,
-						  reset: true,
-						},
-					  },
+					  toolbar: { show: true }
 					},
 
-					colors: [], // IMPORTANT : permet à fillColor de fonctionner
+					colors: [],
 
+					// 🔄 NOUVEL AXE X = GAIN
 					xaxis: {
-				  title: { text: "Gain (€)" },
-				  tickAmount: 8,
-				  labels: {
-					formatter: (value) => Math.round(value),
-				  },
-				  // ⬇️ FORCE les ticks à être des multiples de 1000
-				  tickPlacement: "on",
-				  tickAmount: undefined,
-				  min: (function () {
-					const minGain = Math.min(...filteredPoints.map(p => Math.round(p.Gain)));
-					return Math.floor(minGain / 1000) * 1000;
-				  })(),
-				  max: (function () {
-					const maxGain = Math.max(...filteredPoints.map(p => Math.round(p.Gain)));
-					return Math.ceil(maxGain / 1000) * 1000;
-				  })(),
-				  stepSize: 1000   // ← MAGIQUE : 1 tick = 1000 €
-				},
+					  title: { text: "Gain (€)" },
+					  tickAmount: 6,
+					  min: 0,
+					  max: Math.ceil(Math.max(...filteredPoints.map(p => p.Gain)) / 1000) * 1000,
+					  labels: {
+						formatter: (v) => Math.round(v)
+					  }
+					},
 
+					// 🔄 NOUVEL AXE Y = DRAWDOWN
 					yaxis: {
-					  title: { text: "Drawdown (€)" }, // Axe Y inversé
-					  labels: { formatter: (v) => Math.round(v) },
+					  title: { text: "Drawdown (€)" },
+					  tickAmount: 6,
+					  labels: {
+						formatter: (v) => Math.round(v)
+					  }
 					},
 
 					tooltip: {
 					  shared: false,
 					  intersect: true,
-					  custom: function ({ seriesIndex, dataPointIndex, w }) {
+					  custom: function({ seriesIndex, dataPointIndex, w }) {
 						const p = w.config.series[seriesIndex].data[dataPointIndex].meta;
 						if (!p) return "<div style='padding:5px'>Aucune donnée</div>";
-
 						return `
 						  <div style="padding:10px; font-size:14px">
 							<strong>${Math.round(p.Gain)} € de gain</strong><br/>
@@ -595,10 +571,22 @@ setBestPerformance(
 							🔥 % capital ventes : <b>${Math.round(p.pCapitalVente * 100)} %</b>
 						  </div>
 						`;
-					  },
+					  }
 					},
+
+					markers: {
+					  size: 7,
+					  strokeWidth: 1,
+					  hover: { size: 9 }
+					},
+
+					legend: {
+					  position: "top",
+					  markers: { width: 14, height: 14 }
+					}
 				  }}
 				/>
+
 
 			</section>
 

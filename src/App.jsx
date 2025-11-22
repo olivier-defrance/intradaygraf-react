@@ -283,7 +283,7 @@ const darkModeSwitch = (
     <div>
       <h1>Simulateur IntradayGraf 2026</h1>
       <h2>
-        Basé sur l'historique des résultats du robot (2017 → 10/11/2025)
+        Basé sur l'historique des résultats de backtest du robot (2017 → 10/11/2025)
       </h2>
     </div>
 

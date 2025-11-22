@@ -396,7 +396,7 @@ setBestPerformance(
 					  ? "🧘‍♂️ Sérénité"
 					  : "⚡ Performance"
 				  )}
-				  {" "}• Capital : {formatMoney(result.capital)} • Perte maximale de capital supportée : {formatMoney(result.ddMax)}
+				  {" "}• Capital : <strong>{formatMoney(result.capital)}</strong> • Perte maximale de capital supportée : <strong>{formatMoney(result.ddMax)}</strong>
 				</p>
 
               <div className="results-grid">
@@ -408,15 +408,15 @@ setBestPerformance(
                 <div className="stat-card">
                   <div className="stat-label">Instrument</div>
                   <div className="stat-value">
-                    {result.Actif ?? "–"}
+                    <strong>{result.Actif ?? "–"}</strong>
                   </div>
                 </div>
 
 				<div className="stat-card">
 				  <div className="stat-label">Risque par trade</div>
 				  <div className="stat-value">
-					{formatPercentRaw2(result.pRisque)}
-					{` (soit ${Math.round(result.capital * (result.pRisque / 100))} €)`}
+					<strong>{formatPercentRaw2(result.pRisque)}
+					{` (soit ${Math.round(result.capital * (result.pRisque / 100))} €)`}</strong>
 				  </div>
 				</div>
 
@@ -425,7 +425,7 @@ setBestPerformance(
                     Capital max utilisé lors des ventes
                   </div>
                   <div className="stat-value">
-                    {formatPercentNoDecFromFraction(result.pCapitalVente)}
+                    <strong>{formatPercentNoDecFromFraction(result.pCapitalVente)}</strong>
                   </div>
                 </div>
 

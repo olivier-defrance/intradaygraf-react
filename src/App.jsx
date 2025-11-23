@@ -259,7 +259,9 @@ let stepX = 1000;
 if (maxGain < 5000) stepX = 500;
 else if (maxGain < 12000) stepX = 1000;
 else if (maxGain < 20000) stepX = 2000;
-else if (maxGain < 40000) stepX = 5000;
+else if (maxGain < 30000) stepX = 3000;
+else if (maxGain < 40000) stepX = 4000;
+else if (maxGain < 50000) stepX = 5000;
 else if (maxGain < 60000) stepX = 10000;
 else stepX = 20000;
 

@@ -585,7 +585,7 @@ const roundedMaxGain = Math.ceil(maxGain / stepX) * stepX;
             y: bestSerenite.Drawdown,
             meta: bestSerenite,
             fillColor: "#00e676",
-            marker: { size: 16, strokeWidth: 2, strokeColor: "#00c853" }
+            marker: { size: 20, strokeWidth: 2, strokeColor: "#00c853" }
           }],
         },
 
@@ -596,7 +596,7 @@ const roundedMaxGain = Math.ceil(maxGain / stepX) * stepX;
             y: bestPerformance.Drawdown,
             meta: bestPerformance,
             fillColor: "#ffab00",
-            marker: { size: 16, strokeWidth: 2, strokeColor: "#ff6f00" }
+            marker: { size: 20, strokeWidth: 2, strokeColor: "#ff6f00" }
           }],
         }
       ].filter(Boolean)}

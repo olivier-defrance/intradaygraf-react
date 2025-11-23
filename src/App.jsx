@@ -620,7 +620,12 @@ const roundedMaxGain = Math.ceil(maxGain / stepX) * stepX;
         colors: [], // indispensable pour activer fillColor par point
 
 		xaxis: {
-		  title: { text: "Gain (€)" },
+		  title: { text: "Gain (€)" ,
+    style: {
+      fontSize: "18px",    // 🔥 Taille du texte augmentée
+      fontWeight: 600
+    }
+  },
 		  min: 0,
 		  max: roundedMaxGain,
 		  tickAmount: Math.floor(roundedMaxGain / stepX),
@@ -630,7 +635,12 @@ const roundedMaxGain = Math.ceil(maxGain / stepX) * stepX;
 		},
 
         yaxis: {
-          title: { text: "Drawdown (€)" },
+          title: { text: "Drawdown (€)" ,
+    style: {
+      fontSize: "18px",    // 🔥 Taille du texte augmentée
+      fontWeight: 600
+    }
+  },
           tickAmount: 6,
           labels: {
             formatter: (v) => formatNumber(v),

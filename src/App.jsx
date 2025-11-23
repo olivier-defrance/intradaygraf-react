@@ -579,7 +579,7 @@ const roundedMaxGain = Math.ceil(maxGain / stepX) * stepX;
         },
 
         bestSerenite && {
-  name: "🧘 Sérénité",
+  name: "🧘‍♂️ Sérénité",
   markers: {
     size: 20,          // <-- c'est ici que ça fonctionne réellement
     strokeWidth: 2,

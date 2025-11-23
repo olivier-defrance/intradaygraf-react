@@ -579,34 +579,26 @@ const roundedMaxGain = Math.ceil(maxGain / stepX) * stepX;
         },
 
         bestSerenite && {
-  name: "🧘‍♂️ Sérénité",
-  markers: {
-    size: 20,          // <-- c'est ici que ça fonctionne réellement
-    strokeWidth: 2,
-    strokeColor: "#00c853"
-  },
-  data: [{
-    x: Math.round(bestSerenite.Gain),
-    y: bestSerenite.Drawdown,
-    meta: bestSerenite,
-    fillColor: "#00e676"
-  }]
-},
+          name: "🧘‍♂️ Sérénité",
+          data: [{
+            x: Math.round(bestSerenite.Gain),
+            y: bestSerenite.Drawdown,
+            meta: bestSerenite,
+            fillColor: "#ff6d00",
+            marker: { size: 16, strokeWidth: 2, strokeColor: "#e65100" }
+          }],
+        },
 
         bestPerformance && {
-  name: "⚡ Performance",
-  markers: {
-    size: 20,
-    strokeWidth: 2,
-    strokeColor: "#ff6f00"
-  },
-  data: [{
-    x: Math.round(bestPerformance.Gain),
-    y: bestPerformance.Drawdown,
-    meta: bestPerformance,
-    fillColor: "#ffab00"
-  }]
-}
+          name: "⚡ Performance",
+          data: [{
+            x: Math.round(bestPerformance.Gain),
+            y: bestPerformance.Drawdown,
+            meta: bestPerformance,
+            fillColor: "#ff1744",
+            marker: { size: 16, strokeWidth: 2, strokeColor: "#d50000" }
+          }],
+        }
       ].filter(Boolean)}
 
       options={{

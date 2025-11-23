@@ -197,8 +197,8 @@ if (!rows || rows.length === 0) {
 
 if (objectif === "serenite") {
   cleanedRows.forEach((r) => {
-    const current = r.Sharpe ?? -Infinity;
-    const bestVal = best.Sharpe ?? -Infinity;
+    const current = r.Calmar?? -Infinity;
+    const bestVal = best.Calmar ?? -Infinity;
     if (current > bestVal) best = r;
   });
 } else {
@@ -214,7 +214,7 @@ setAllPoints(cleanedRows);
 
 setBestSerenite(
   cleanedRows.reduce((a, b) =>
-    (b.Sharpe ?? -Infinity) > (a.Sharpe ?? -Infinity) ? b : a
+    (b.Calmar ?? -Infinity) > (a.Calmar ?? -Infinity) ? b : a
   )
 );
 
@@ -486,8 +486,8 @@ const roundedMaxGain = Math.ceil(maxGain / stepX) * stepX;
                 <div className="stat-card">
                   <div className="stat-label">Gain total / Drawdown max</div>
                   <div className="stat-value">
-                    {result.Sharpe !== null && result.Sharpe !== undefined
-                      ? result.Sharpe.toFixed(2).replace(".", ",")
+                    {result.Calmar !== null && result.Calmar !== undefined
+                      ? result.Calmar.toFixed(2).replace(".", ",")
                       : "–"}
                   </div>
                 </div>
@@ -584,8 +584,8 @@ const roundedMaxGain = Math.ceil(maxGain / stepX) * stepX;
             x: Math.round(bestSerenite.Gain),
             y: bestSerenite.Drawdown,
             meta: bestSerenite,
-            fillColor: "#ff6d00",
-            marker: { size: 16, strokeWidth: 2, strokeColor: "#e65100" }
+            fillColor: "#ff2d95",
+            marker: { size: 16, strokeWidth: 2, strokeColor: "#c6006f" }
           }],
         },
 
@@ -595,8 +595,8 @@ const roundedMaxGain = Math.ceil(maxGain / stepX) * stepX;
             x: Math.round(bestPerformance.Gain),
             y: bestPerformance.Drawdown,
             meta: bestPerformance,
-            fillColor: "#ff1744",
-            marker: { size: 16, strokeWidth: 2, strokeColor: "#d50000" }
+            fillColor: "#00e5ff",
+            marker: { size: 16, strokeWidth: 2, strokeColor: "#00b8d4" }
           }],
         }
       ].filter(Boolean)}

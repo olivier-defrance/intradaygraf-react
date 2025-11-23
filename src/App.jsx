@@ -656,8 +656,8 @@ const roundedMaxGain = Math.ceil(maxGain / stepX) * stepX;
             return `
               <div style="padding:10px; font-size:14px">
                 <strong>${formatNumber(p.Gain)} € de gain</strong><br/>
+                🏦 Capital : <b>${formatNumber(p.Capital)} €</b><br/>				
                 📉 Drawdown : <b>${formatNumber(p.Drawdown)} €</b><br/>
-                🏦 Capital : <b>${formatNumber(p.Capital)} €</b><br/>
                 📈 Actif : <b>${p.Actif}</b><br/>
                 🎯 Risque/trade : <b>${(p.pRisque ?? 0).toFixed(2)} %</b><br/>
                 🔥 % capital ventes : <b>${Math.round((p.pCapitalVente ?? 0) * 100)} %</b>

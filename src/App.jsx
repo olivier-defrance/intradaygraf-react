@@ -622,7 +622,7 @@ const roundedMaxGain = Math.ceil(maxGain / stepX) * stepX;
 		xaxis: {
 		  title: { text: "Gain (€)" ,
     style: {
-      fontSize: "18px",    // 🔥 Taille du texte augmentée
+      fontSize: "14px",    // 🔥 Taille du texte augmentée
       fontWeight: 600
     }
   },
@@ -637,7 +637,7 @@ const roundedMaxGain = Math.ceil(maxGain / stepX) * stepX;
         yaxis: {
           title: { text: "Drawdown (€)" ,
     style: {
-      fontSize: "18px",    // 🔥 Taille du texte augmentée
+      fontSize: "14px",    // 🔥 Taille du texte augmentée
       fontWeight: 600
     }
   },

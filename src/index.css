@@ -584,7 +584,7 @@ body {
 }
 
 .legend-performance::before {
-  background: #00e5ff; /* même couleur que ton point Performance */
+  background: #ffab00; /* même couleur que ton point Performance */
 }
 
 /* --- TITRES PAR DÉFAUT (desktop/tablette) --- */

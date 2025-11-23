@@ -663,10 +663,11 @@ h2 {
 }
 
 /* ON */
+/* La couleur sera injectée via style={} depuis React */
 .switch input:checked + .slider {
-  background-color: var(--accent);
+  background-color: var(--switch-color);
 }
 
 .switch input:checked + .slider:before {
-  transform: translateX(22px);
+  transform: translateX(26px);
 }

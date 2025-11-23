@@ -533,9 +533,12 @@ const roundedMaxGain = Math.ceil(maxGain / stepX) * stepX;
  
 <div className="filters-actifs" style={{ marginBottom: "1rem", display: "flex", flexWrap: "wrap", gap: "1rem" }}>
 <label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-<div className="switch">
-<input type="checkbox" checked={filterActif1} onChange={toggleActif1} />
-<span className="slider"></span>
+<div
+  className="switch"
+  style={{ "--switch-color": "#64b5f6" }}   // bleu clair
+>
+  <input type="checkbox" checked={filterActif1} onChange={toggleActif1} />
+  <span className="slider"></span>
 </div>
     {/* Pastille ronde bleu clair */}
     <span
@@ -551,10 +554,14 @@ const roundedMaxGain = Math.ceil(maxGain / stepX) * stepX;
 
 
 <label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-<div className="switch">
-<input type="checkbox" checked={filterActif5} onChange={toggleActif5} />
-<span className="slider"></span>
+<div
+  className="switch"
+  style={{ "--switch-color": "#1565c0" }}   // bleu foncé
+>
+  <input type="checkbox" checked={filterActif5} onChange={toggleActif5} />
+  <span className="slider"></span>
 </div>
+
     {/* Pastille ronde bleu foncé */}
     <span
       style={{

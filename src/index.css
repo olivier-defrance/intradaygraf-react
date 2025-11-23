@@ -580,11 +580,11 @@ body {
 }
 
 .legend-serenite::before {
-  background: #00e676; /* même couleur que ton point Sérénité */
+  background: #ff6d00; /* même couleur que ton point Sérénité */
 }
 
 .legend-performance::before {
-  background: #ffab00; /* même couleur que ton point Performance */
+  background: #ff1744; /* même couleur que ton point Performance */
 }
 
 /* --- TITRES PAR DÉFAUT (desktop/tablette) --- */

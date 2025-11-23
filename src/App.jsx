@@ -595,8 +595,8 @@ const roundedMaxGain = Math.ceil(maxGain / stepX) * stepX;
             x: Math.round(bestPerformance.Gain),
             y: bestPerformance.Drawdown,
             meta: bestPerformance,
-            fillColor: "#00e5ff",
-            marker: { size: 16, strokeWidth: 2, strokeColor: "#00b8d4" }
+            fillColor: "#ffab00",
+            marker: { size: 16, strokeWidth: 2, strokeColor: "#ff8f00" }
           }],
         }
       ].filter(Boolean)}

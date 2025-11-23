@@ -540,15 +540,6 @@ const roundedMaxGain = Math.ceil(maxGain / stepX) * stepX;
   <input type="checkbox" checked={filterActif1} onChange={toggleActif1} />
   <span className="slider"></span>
 </div>
-    {/* Pastille ronde bleu clair */}
-    <span
-      style={{
-        width: "14px",
-        height: "14px",
-        borderRadius: "50%",       // rond
-        backgroundColor: "#64b5f6" // couleur actif 1€
-      }}
-    ></span>
 	<span>Allemagne 40 Cash (1€)</span>
 </label>
 
@@ -561,16 +552,6 @@ const roundedMaxGain = Math.ceil(maxGain / stepX) * stepX;
   <input type="checkbox" checked={filterActif5} onChange={toggleActif5} />
   <span className="slider"></span>
 </div>
-
-    {/* Pastille ronde bleu foncé */}
-    <span
-      style={{
-        width: "14px",
-        height: "14px",
-        borderRadius: "50%",
-        backgroundColor: "#1565c0" // couleur actif 5€
-      }}
-    ></span>
 	<span>Allemagne 40 Cash (5€)</span>
 </label>
 </div>

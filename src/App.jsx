@@ -281,7 +281,7 @@ const roundedMaxGain = Math.ceil(maxGain / stepX) * stepX;
   }}>
     
     <div>
-      <h1>Simulateur IntradayGraf 2026&copy;</h1>
+      <h1>Simulateur IntradayGraf 2026</h1>
       <h2>
         Basé sur les résultats du robot en backtest sur la période 2017 → 10/11/2025
       </h2>

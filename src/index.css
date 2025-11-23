@@ -670,12 +670,3 @@ h2 {
 .switch input:checked + .slider:before {
   transform: translateX(22px);
 }
-
-/* Mode sombre */
-[data-theme="dark"] .slider {
-  background-color: #555;
-}
-
-[data-theme="dark"] .switch input:checked + .slider {
-  background-color: var(--accent);
-}

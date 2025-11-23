@@ -239,19 +239,30 @@ setBestPerformance(
     }
   };
   
-const maxDD = allPoints.length > 0
-    ? Math.max(...allPoints.map(p => p.Drawdown))
-    : ddMax;
+ // ==== Calcul dynamique de l'axe X (Gain) ====
+// On prend en priorité le gain de l'objectif Performance
+let maxGain = 0;
 
-// Définition du pas
-let step = 1000;
-if (maxDD < 5000) step = 500;
-else if (maxDD < 12000) step = 1000;
-else step = 2000;
+if (bestPerformance && typeof bestPerformance.Gain === "number") {
+  maxGain = bestPerformance.Gain;
+} else if (allPoints.length > 0) {
+  maxGain = Math.max(...allPoints.map((p) => p.Gain));
+}
 
-// Valeur max arrondie à la hausse
-const roundedMax = Math.ceil(maxDD / step) * step;
-  
+// Si rien en base, on laisse zéro (le graphique ne s'affichera pas)
+if (!Number.isFinite(maxGain) || maxGain < 0) {
+  maxGain = 0;
+}
+
+// Définition du pas en fonction du gain max
+let stepX = 1000;
+if (maxGain < 5000) stepX = 500;
+else if (maxGain < 12000) stepX = 1000;
+else stepX = 2000;
+
+// Arrondi du max au pas supérieur
+const roundedMaxGain = Math.ceil(maxGain / stepX) * stepX;
+
   
   return (
     <div className="app-root">
@@ -581,7 +592,7 @@ const roundedMax = Math.ceil(maxDD / step) * step;
             y: bestSerenite.Drawdown,
             meta: bestSerenite,
             fillColor: "#00e676",
-            marker: { size: 18, strokeWidth: 2, strokeColor: "#00c853" }
+            marker: { size: 16, strokeWidth: 2, strokeColor: "#00c853" }
           }],
         },
 
@@ -592,7 +603,7 @@ const roundedMax = Math.ceil(maxDD / step) * step;
             y: bestPerformance.Drawdown,
             meta: bestPerformance,
             fillColor: "#ffab00",
-            marker: { size: 25, strokeWidth: 2, strokeColor: "#ff6f00" }
+            marker: { size: 16, strokeWidth: 2, strokeColor: "#ff6f00" }
           }],
         }
       ].filter(Boolean)}
@@ -616,12 +627,12 @@ const roundedMax = Math.ceil(maxDD / step) * step;
         colors: [], // indispensable pour activer fillColor par point
 
 		xaxis: {
-		  title: { text: "Drawdown (€)" },
+		  title: { text: "Gain (€)" },
 		  min: 0,
-		  max: roundedMax,
-		  tickAmount: Math.ceil(roundedMax / step),
+		  max: roundedMaxGain,
+		  tickAmount: Math.floor(roundedMaxGain / stepX),
 		  labels: {
-			formatter: (v) => formatNumber(v)
+			formatter: (value) => formatNumber(Math.round(value))
 		  }
 		},
 
